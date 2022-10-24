@@ -38,6 +38,17 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+
+        <dependency>
+            <groupId>com.yugabyte</groupId>
+            <artifactId>spring-data-yugabytedb-ysql</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
