@@ -31,13 +31,21 @@ public class Warehouse implements Persistable<Integer> {
     @Id
     @Column("W_ID")
     private int id;
+    @Column("W_NAME")
     private String w_name;
+    @Column("W_STREET_1")
     private String w_street_1;
+    @Column("W_STREET_2")
     private String w_street_2;
+    @Column("W_CITY")
     private String w_city;
+    @Column("W_STATE")
     private String w_state;
-    private String W_ZIP;
+    @Column("W_ZIP")
+    private String w_zip;
+    @Column("W_TAX")
     private BigDecimal w_tax;
+    @Column("W_YTD")
     private BigDecimal w_ytd;
 
     @Transient
@@ -55,4 +63,20 @@ public class Warehouse implements Persistable<Integer> {
         return isInsert;
     }
 
+
+    @Override
+    public String toString() {
+        return "Warehouse{" +
+                "id=" + id +
+                ", w_name='" + w_name + '\'' +
+                ", w_street_1='" + w_street_1 + '\'' +
+                ", w_street_2='" + w_street_2 + '\'' +
+                ", w_city='" + w_city + '\'' +
+                ", w_state='" + w_state + '\'' +
+                ", w_zip='" + w_zip + '\'' +
+                ", w_tax=" + w_tax +
+                ", w_ytd=" + w_ytd +
+                ", isInsert=" + isInsert +
+                '}';
+    }
 }
