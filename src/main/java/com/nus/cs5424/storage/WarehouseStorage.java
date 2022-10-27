@@ -14,4 +14,8 @@ import com.nus.cs5424.data.Warehouse;
 public interface WarehouseStorage {
 
     Warehouse query(int w_id);
+
+    Warehouse getWarehouseByIdentifier(int w_id);
+
+    boolean updateW_YTDByPayment(int w_id, int payment);
 }

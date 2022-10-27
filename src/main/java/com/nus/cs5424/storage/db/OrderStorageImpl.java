@@ -24,7 +24,7 @@ public class OrderStorageImpl extends BaseStorage implements OrderStorage {
         String sql = "INSERT INTO " + TABLE + " (\"O_ID\", \"O_D_ID\", \"O_W_ID\", \"O_C_ID\", \"O_ENTRY_D\", \"O_OL_CNT\", \"O_ALL_LOCAL\") VALUES (" +
                 + order.getO_id() + ", "
                 + order.getO_d_id() + ", "
-                + order.getId() + ", "
+                + order.getO_w_id() + ", "
                 + order.getO_c_id() + ", "
                 + "\'" + order.getO_entry_d() + "\'" + ", "
                 + order.getO_ol_cnt() + ", "

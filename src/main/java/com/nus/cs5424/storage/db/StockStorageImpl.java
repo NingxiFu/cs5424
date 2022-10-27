@@ -31,7 +31,7 @@ public class StockStorageImpl extends BaseStorage implements StockStorage {
             @Override
             public Stock mapRow(ResultSet rs, int rowNum) throws SQLException {
                 Stock stock = new Stock();
-                stock.setId(rs.getInt("S_W_ID"));
+                stock.setS_w_id(rs.getInt("S_W_ID"));
                 stock.setS_i_id(rs.getInt("S_I_ID"));
                 // TODO: 完成剩下的
                 return stock;

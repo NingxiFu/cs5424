@@ -24,7 +24,7 @@ public class OrderLineStorageImpl extends BaseStorage implements OrderLineStorag
         String sql = String.format("INSERT INTO " + TABLE
                 + " (\"OL_O_ID\", \"OL_D_ID\", \"OL_W_ID\", \"OL_NUMBER\", \"OL_I_ID\", \"OL_SUPPLY_W_ID\", \"OL_QUANTITY\", \"OL_AMOUNT\", \"OL_DIST_INFO\") "
                 + "VALUES (%d, %d, %d, %d, %d, %d, %s, %s, '%s')",
-                orderLine.getOl_o_id(), orderLine.getOl_d_id(), orderLine.getId(), orderLine.getOl_number(),
+                orderLine.getOl_o_id(), orderLine.getOl_d_id(), orderLine.getOl_w_id(), orderLine.getOl_number(),
                 orderLine.getOl_i_id(),orderLine.getOl_supply_w_id(), orderLine.getOl_quantity(),
                 orderLine.getOl_amount(), orderLine.getOl_dist_info());
 

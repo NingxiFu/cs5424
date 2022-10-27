@@ -6,11 +6,13 @@
  */
 package com.nus.cs5424.storage.db;
 
-import com.fasterxml.jackson.databind.ser.Serializers.Base;
 import com.nus.cs5424.data.Warehouse;
 import com.nus.cs5424.storage.BaseStorage;
 import com.nus.cs5424.storage.WarehouseStorage;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
+
+import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,6 +20,7 @@ import java.sql.SQLException;
 /**
  * @author guochenghui
  */
+@Repository
 public class WarehouseStorageImpl extends BaseStorage implements WarehouseStorage {
 
     private static final String TABLE = "\"Warehouse\"";
@@ -29,7 +32,7 @@ public class WarehouseStorageImpl extends BaseStorage implements WarehouseStorag
             @Override
             public Warehouse mapRow(ResultSet rs, int rowNum) throws SQLException {
                 Warehouse warehouse = new Warehouse();
-                warehouse.setId(rs.getInt("W_ID"));
+                warehouse.setW_id(rs.getInt("W_ID"));
                 warehouse.setW_name(rs.getString("W_NAME"));
                 return warehouse;
             }
@@ -37,4 +40,17 @@ public class WarehouseStorageImpl extends BaseStorage implements WarehouseStorag
 
         return warehouse;
     }
+
+    @Override
+    public Warehouse getWarehouseByIdentifier(int w_id) {
+        String sql = "SELECT * FROM " + TABLE + " WHERE \"W_ID\" = " + w_id;
+        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<Warehouse>(Warehouse.class));
+    }
+
+    @Override
+    public boolean updateW_YTDByPayment(int w_id, int payment){
+        String sql = "UPDATE " + TABLE + " SET \"W_YTD\" = \"W_YTD\" + " + payment + " WHERE \"W_ID\" = " + w_id;
+        return jdbcTemplate.update(sql) > 0;
+    }
+
 }

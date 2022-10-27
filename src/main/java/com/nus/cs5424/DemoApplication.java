@@ -6,13 +6,9 @@
  */
 package com.nus.cs5424;
 
-import com.nus.cs5424.data.OrderLine;
-import com.nus.cs5424.data.Stock;
-import com.nus.cs5424.storage.DistrictStorage;
-import com.nus.cs5424.storage.OrderLineStorage;
-import com.nus.cs5424.storage.OrderStorage;
-import com.nus.cs5424.storage.StockStorage;
-import com.nus.cs5424.storage.WarehouseRepository;
+import com.nus.cs5424.data.*;
+import com.nus.cs5424.storage.*;
+import com.nus.cs5424.storage.db.WarehouseStorageImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -30,12 +26,14 @@ public class DemoApplication implements CommandLineRunner {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-
     @Autowired
-    WarehouseRepository warehouseRepository;
+    WarehouseStorage warehouseStorage;
 
     @Autowired
     DistrictStorage districtStorage;
+
+    @Autowired
+    CustomerStorage customerStorage;
 
     @Autowired
     OrderStorage orderStorage;
@@ -71,6 +69,8 @@ public class DemoApplication implements CommandLineRunner {
 //
 //        System.out.println(String.format("Query returned: name = %s, email = %s",
 //                customerFromDB.getName(), customerFromDB.getEmail()));
+
+
 //            Order order = new Order();
 //            order.setId(10);
 //            order.setO_d_id(10);
@@ -95,7 +95,33 @@ public class DemoApplication implements CommandLineRunner {
 //        orderLine.setOl_supply_w_id(1);
 //        orderLine.setOl_quantity(new BigDecimal(1));
 //        orderLine.setOl_dist_info("aaaa");
-
+//
 //        orderLineStorage.add(orderLine);
+
+
+//////2.2 Payment Transaction
+//////inputs:
+//        int c_w_id = 5;
+//        int c_d_id = 1;
+//        int c_id = 2;
+//        int payment = 10000;
+////        warehouseStorage.updateW_YTDByPayment(c_w_id, payment);
+////        districtStorage.updateD_YTDByPayment(c_w_id, c_d_id, payment);
+////        customerStorage.updateByPayment(c_w_id, c_d_id, c_id, payment);
+////
+//////outputs:
+//        Customer c = customerStorage.getCustomerByIdentifier(c_w_id, c_d_id, c_id);
+//        System.out.println("Customer's Identifier: " + c.getC_w_id() + ", " + c.getC_d_id() + + c.getC_id() + "\tName: "
+//                + c.getC_first() + ", " + c.getC_middle() + ", " + c.getC_last() + "\tAddress: "
+//                + c.getC_street_1() + ", " + c.getC_street_2() + ", " + c.getC_city() + ", " + c.getC_state() + ", " + c.getC_zip()
+//                + "\tC_PHONE: " + c.getC_phone() + "\tC_SINCE: " + c.getC_since() + "\tC_CREDIT: " + c.getC_credit()
+//                + "\tC_CREDIT_LIM: " + c.getC_credit_lim() + "\tC_DISCOUNT: " + c.getC_discount() + "\tC_BALANCE: " + c.getC_balance());
+//        Warehouse w = warehouseStorage.getWarehouseByIdentifier(c_w_id);
+//        System.out.println("Warehouse address: " + w.getW_street_1() + ", " + w.getW_street_2() + ", " + w.getW_city() + ", " + w.getW_state() + ", " + w.getW_zip());
+//        District d = districtStorage.getDistrictByIdentifier(c_w_id, c_d_id);
+//        System.out.println("District address: " + d.getD_street_1() + ", " + d.getD_street_2() + ", " + d.getD_city() + ", " + d.getD_state() + ", " + d.getD_zip());
+
+
+
     }
 }
