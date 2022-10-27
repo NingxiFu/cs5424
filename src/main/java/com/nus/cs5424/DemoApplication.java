@@ -121,7 +121,5 @@ public class DemoApplication implements CommandLineRunner {
 //        District d = districtStorage.getDistrictByIdentifier(c_w_id, c_d_id);
 //        System.out.println("District address: " + d.getD_street_1() + ", " + d.getD_street_2() + ", " + d.getD_city() + ", " + d.getD_state() + ", " + d.getD_zip());
 
-
-
     }
 }
