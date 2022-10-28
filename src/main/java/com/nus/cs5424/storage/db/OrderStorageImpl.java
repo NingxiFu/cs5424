@@ -9,6 +9,7 @@ package com.nus.cs5424.storage.db;
 import com.nus.cs5424.data.Order;
 import com.nus.cs5424.storage.BaseStorage;
 import com.nus.cs5424.storage.OrderStorage;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -32,5 +33,12 @@ public class OrderStorageImpl extends BaseStorage implements OrderStorage {
 
         jdbcTemplate.update(sql);
         return order;
+    }
+
+    @Override
+    public Order getLastOrderByCustomer(int o_w_id, int o_d_id, int o_c_id) {
+        String sql = "SELECT * FROM " + TABLE + " WHERE \"O_W_ID\" = " + o_w_id + " AND " + "\"O_D_ID\" = " + o_d_id + " AND " + "\"O_C_ID\" = " + o_c_id
+                + " ORDER BY \"O_ENTRY_D\" DESC LIMIT 1";
+        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<Order>(Order.class));
     }
 }
