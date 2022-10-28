@@ -9,7 +9,10 @@ package com.nus.cs5424.storage.db;
 import com.nus.cs5424.data.OrderLine;
 import com.nus.cs5424.storage.BaseStorage;
 import com.nus.cs5424.storage.OrderLineStorage;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author guochenghui
@@ -30,5 +33,11 @@ public class OrderLineStorageImpl extends BaseStorage implements OrderLineStorag
 
         jdbcTemplate.update(sql);
         return orderLine;
+    }
+    @Override
+    public List<OrderLine> getOrderLinesByOneOrder(int ol_w_id, int ol_d_id, int ol_o_id) {
+        String sql = "SELECT * FROM " + TABLE + " WHERE \"OL_W_ID\" = " + ol_w_id + " AND " + "\"OL_D_ID\" = " + ol_d_id + " AND " + "\"OL_O_ID\" = " + ol_o_id
+                + " ORDER BY \"OL_NUMBER\" ASC";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<OrderLine>(OrderLine.class));
     }
 }

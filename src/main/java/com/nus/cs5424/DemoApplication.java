@@ -21,7 +21,7 @@ import java.math.BigDecimal;
  * @author guochenghui
  */
 @SpringBootApplication
-public class DemoApplication implements CommandLineRunner {
+public class  DemoApplication implements CommandLineRunner {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
