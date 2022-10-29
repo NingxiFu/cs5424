@@ -120,5 +120,21 @@ class TestSql {
         }
     }
 
+    @Test
+    void stockLevel(){
+//2.5 Stock-level Transaction
+//inputs:
+        int w_id = 5;
+        int d_id = 1;
+        int threshold = 72;
+        int num_last_orders = 1;
+//transaction:
+        int next_o_id = districtStorage.getNext_O_IDByPrimaryKey(w_id, d_id);
+        List<Integer> item_ids = orderLineStorage.getItemIdsByLastOrders(w_id, d_id, next_o_id, num_last_orders);
+        int num_of_i = stockStorage.getNumOfItemBelowThresholdByWarehouse(w_id, item_ids, threshold);
+//outputs:
+        System.out.println("Total number of items where stock below threshold: " + num_of_i);
+    }
+
 
 }

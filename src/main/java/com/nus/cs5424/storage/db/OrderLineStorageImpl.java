@@ -54,4 +54,14 @@ public class OrderLineStorageImpl extends BaseStorage implements OrderLineStorag
         String sql = "SELECT SUM(\"OL_AMOUNT\") FROM " + TABLE + " WHERE \"OL_W_ID\" = " + ol_w_id + " AND " + "\"OL_D_ID\" = " + ol_d_id + " AND " + "\"OL_O_ID\" = " + ol_o_id;
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
+
+    @Override
+    public List<Integer> getItemIdsByLastOrders(int ol_w_id, int ol_d_id, int next_o_id, int num_last_orders) {
+        int left = next_o_id - num_last_orders;
+        int right = next_o_id - 1;
+        String sql = "SELECT \"OL_I_ID\" FROM " + TABLE + " WHERE \"OL_W_ID\" = " + ol_w_id + " AND " + "\"OL_D_ID\" = " + ol_d_id + " AND "
+                + "\"OL_O_ID\" BETWEEN " + left + " AND " + right;
+        return jdbcTemplate.queryForList(sql, Integer.class);
+    }
+
 }
