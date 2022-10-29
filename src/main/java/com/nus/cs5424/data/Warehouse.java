@@ -26,7 +26,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class Warehouse{
 
-    private int w_id;
+    private Integer w_id;
     private String w_name;
     private String w_street_1;
     private String w_street_2;

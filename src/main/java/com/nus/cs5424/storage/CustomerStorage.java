@@ -16,4 +16,6 @@ public interface CustomerStorage {
     Customer getCustomerByIdentifier(int c_w_id, int c_d_id, int c_id);
 
     boolean updateByPayment(int c_w_id, int c_d_id, int c_id, int payment);
+
+    boolean updateByDelivery(int c_w_id, int c_d_id, int c_id, int ol_amount_sum);
 }

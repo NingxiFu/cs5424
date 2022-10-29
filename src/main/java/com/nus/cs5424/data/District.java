@@ -1,6 +1,7 @@
 package com.nus.cs5424.data;
 
 import lombok.*;
+import org.springframework.data.relational.core.sql.In;
 
 import java.math.BigDecimal;
 
@@ -10,7 +11,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class District {
-    private int d_w_id;
+    private Integer d_w_id;
     private String d_id;
     private String d_name;
     private String d_street_1;
@@ -20,5 +21,5 @@ public class District {
     private String d_zip;
     private BigDecimal d_tax;
     private BigDecimal d_ytd;
-    private int d_next_o_id;
+    private Integer d_next_o_id;
 }

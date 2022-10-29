@@ -34,10 +34,24 @@ public class OrderLineStorageImpl extends BaseStorage implements OrderLineStorag
         jdbcTemplate.update(sql);
         return orderLine;
     }
+
     @Override
     public List<OrderLine> getOrderLinesByOneOrder(int ol_w_id, int ol_d_id, int ol_o_id) {
         String sql = "SELECT * FROM " + TABLE + " WHERE \"OL_W_ID\" = " + ol_w_id + " AND " + "\"OL_D_ID\" = " + ol_d_id + " AND " + "\"OL_O_ID\" = " + ol_o_id
                 + " ORDER BY \"OL_NUMBER\" ASC";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<OrderLine>(OrderLine.class));
+    }
+
+    @Override
+    public boolean updateDelivery_DByOneOrder(int ol_w_id, int ol_d_id, int ol_o_id) {
+        String sql = "UPDATE " + TABLE + " SET \"OL_DELIVERY_D\" = current_timestamp" +
+                " WHERE \"OL_W_ID\" = " + ol_w_id + " AND " +  "\"OL_D_ID\" = " + ol_d_id + " AND " +  "\"OL_O_ID\" = " + ol_o_id;
+        return jdbcTemplate.update(sql) > 0;
+    }
+
+    @Override
+    public int getSumOfAmountByOneOrder(int ol_w_id, int ol_d_id, int ol_o_id) {
+        String sql = "SELECT SUM(\"OL_AMOUNT\") FROM " + TABLE + " WHERE \"OL_W_ID\" = " + ol_w_id + " AND " + "\"OL_D_ID\" = " + ol_d_id + " AND " + "\"OL_O_ID\" = " + ol_o_id;
+        return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 }

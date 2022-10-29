@@ -17,12 +17,12 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class Stock{
 
-    private int s_w_id;
-    private int s_i_id;
+    private Integer s_w_id;
+    private Integer s_i_id;
     private BigDecimal s_quantity;
     private BigDecimal s_ytd;
-    private int s_order_cnt;
-    private int s_remote_cnt;
+    private Integer s_order_cnt;
+    private Integer s_remote_cnt;
     private String s_dist_01;
     private String s_dist_02;
     private String s_dist_03;

@@ -17,11 +17,11 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class Order {
 
-    private int o_w_id;
-    private int o_d_id;
-    private int o_id;
-    private int o_c_id;
-    private int o_carrier_id;
+    private Integer o_w_id;
+    private Integer o_d_id;
+    private Integer o_id;
+    private Integer o_c_id;
+    private Integer o_carrier_id;
     private BigDecimal o_ol_cnt;
     private BigDecimal o_all_local;
     private Timestamp o_entry_d;

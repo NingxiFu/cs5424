@@ -17,14 +17,14 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class OrderLine{
 
-    private int ol_w_id;
-    private int ol_d_id;
-    private int ol_o_id;
-    private int ol_number;
-    private int ol_i_id;
+    private Integer ol_w_id;
+    private Integer ol_d_id;
+    private Integer ol_o_id;
+    private Integer ol_number;
+    private Integer ol_i_id;
     private Timestamp ol_delivery_d;
     private BigDecimal ol_amount;
-    private int ol_supply_w_id;
+    private Integer ol_supply_w_id;
     private BigDecimal ol_quantity;
     private String ol_dist_info;
 

@@ -11,9 +11,9 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class Item {
 
-    private int i_id; //i_id
+    private Integer i_id; //i_id
     private String i_name;
     private BigDecimal i_price;
-    private int i_im_id;
+    private Integer i_im_id;
     private String i_data;
 }

@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -50,8 +51,10 @@ class TestSql {
         Stock query = stockStorage.query(1, 1);
         System.out.println(query.toString());
     }
+
     @Test
     void payment(){
+//2.2 Payment Transaction
 //inputs:
         int c_w_id = 5;
         int c_d_id = 1;
@@ -75,8 +78,30 @@ class TestSql {
     }
 
     @Test
+    void delivery() {
+//2.3 Delivery Transaction
+//inputs:
+        int w_id = 5;
+        int carrier_id = 8;
+//transaction:
+        for (int d_id = 1; d_id <= 10; d_id++){ //when debugging, can change to d_id <= 1.
+            Order o = orderStorage.getOldestOrderByDistrict(w_id, d_id);
+            int o_id = o.getO_id();
+            int c_id = o.getO_c_id();
+//            System.out.println(o_id + " " + c_id);
+
+            orderStorage.updateCarrierIdByOldestOrder(w_id, d_id, o_id, carrier_id);
+            orderLineStorage.updateDelivery_DByOneOrder(w_id, d_id, o_id);
+            int ol_amount_sum = orderLineStorage.getSumOfAmountByOneOrder(w_id, d_id, o_id);
+            customerStorage.updateByDelivery(w_id, d_id, c_id, ol_amount_sum);
+        }
+//outputs:None
+    }
+
+
+    @Test
     void orderStatus(){
-//2.2 Payment Transaction
+//2.4 Order-Status Transaction
 //inputs:
         int c_w_id = 5;
         int c_d_id = 1;
@@ -94,4 +119,6 @@ class TestSql {
                     + ol.getOl_quantity() + ",\tTotal price for ordered item: " + ol.getOl_amount() + ",\tData and time of delivery: " + ol.getOl_delivery_d());
         }
     }
+
+
 }

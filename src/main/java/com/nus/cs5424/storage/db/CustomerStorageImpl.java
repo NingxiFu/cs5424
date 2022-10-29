@@ -33,6 +33,15 @@ public class CustomerStorageImpl extends BaseStorage implements CustomerStorage 
                 " WHERE \"C_W_ID\" = " + c_w_id + " AND " +  "\"C_D_ID\" = " + c_d_id + " AND " +  "\"C_ID\" = " + c_id;
         return jdbcTemplate.update(sql) > 0;
     }
+
+    @Override
+    public boolean updateByDelivery(int c_w_id, int c_d_id, int c_id, int ol_amount_sum) {
+        String sql = "UPDATE " + TABLE + " SET \"C_BALANCE\" = \"C_BALANCE\" + " + ol_amount_sum +
+                ", \"C_DELIVERY_CNT\" = \"C_DELIVERY_CNT\" + 1 " +
+                " WHERE \"C_W_ID\" = " + c_w_id + " AND " +  "\"C_D_ID\" = " + c_d_id + " AND " +  "\"C_ID\" = " + c_id;
+        return jdbcTemplate.update(sql) > 0;
+    }
+
 //
 //    @Override
 //    public Integer getNext_O_IDByPrimaryKey(int w_id, int d_id) {

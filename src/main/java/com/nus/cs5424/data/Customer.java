@@ -11,9 +11,9 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Customer{
-    private int c_w_id;
-    private int c_d_id;
-    private int c_id;
+    private Integer c_w_id;
+    private Integer c_d_id;
+    private Integer c_id;
     private String c_first;
     private String c_middle;
     private String c_last;
@@ -28,8 +28,8 @@ public class Customer{
     private BigDecimal c_credit_lim;
     private BigDecimal c_discount;
     private BigDecimal c_balance;
-    private double c_ytd_payment;
-    private int c_payment_cnt;
-    private int c_delivery_cnt;
+    private Double c_ytd_payment;
+    private Integer c_payment_cnt;
+    private Integer c_delivery_cnt;
     private String c_data;
 }
