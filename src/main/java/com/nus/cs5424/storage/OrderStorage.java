@@ -14,4 +14,6 @@ import com.nus.cs5424.data.Order;
 public interface OrderStorage {
 
     Order add(Order order);
+
+    Order getLastOrderByCustomer(int o_w_id, int o_d_id, int o_c_id);
 }
