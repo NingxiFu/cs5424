@@ -136,5 +136,33 @@ class TestSql {
         System.out.println("Total number of items where stock below threshold: " + num_of_i);
     }
 
+//    @Test
+//    void popularItem(){
+////2.6 Popular-Item Transaction
+////inputs:
+//        int w_id = 5;
+//        int d_id = 1;
+//        int num_last_orders = 1;
+////transaction:
+//        int next_o_id = districtStorage.getNext_O_IDByPrimaryKey(w_id, d_id);
+//        List<Integer> item_ids = orderLineStorage.getItemIdsByLastOrders(w_id, d_id, next_o_id, num_last_orders);
+//        int num_of_i = stockStorage.getNumOfItemBelowThresholdByWarehouse(w_id, item_ids, threshold);
+////outputs:
+//        System.out.println("Total number of items where stock below threshold: " + num_of_i);
+//    }
+
+    @Test
+    void topBalance(){
+//2.7 Top-Balance Transaction
+//inputs:None
+//transaction:
+        List<Customer> cs = customerStorage.getCustomersByTopBalance();
+//outputs:
+        for (Customer c : cs){
+            System.out.println("Customer's Name: " + c.getC_first() + ", " + c.getC_middle() + ", " + c.getC_last() + ",\tBalance: " + c.getC_balance());
+            System.out.println("Warehouse's Name: " + warehouseStorage.getWarehouseByIdentifier(c.getC_w_id()).getW_name());
+            System.out.println("District's Name: " + districtStorage.getDistrictByIdentifier(c.getC_w_id(), c.getC_d_id()).getD_name());
+        }
+    }
 
 }

@@ -12,6 +12,8 @@ import com.nus.cs5424.storage.CustomerStorage;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author guochenghui
  */
@@ -41,6 +43,17 @@ public class CustomerStorageImpl extends BaseStorage implements CustomerStorage 
                 " WHERE \"C_W_ID\" = " + c_w_id + " AND " +  "\"C_D_ID\" = " + c_d_id + " AND " +  "\"C_ID\" = " + c_id;
         return jdbcTemplate.update(sql) > 0;
     }
+
+    @Override
+    public List<Customer> getCustomersByTopBalance() {
+        String sql = "WITH \"tops\" AS((SELECT * FROM \"Customer\" WHERE \"C_W_ID\" = 1 ORDER BY \"C_BALANCE\" DESC LIMIT 10)";
+        for (int w_id = 2; w_id <= 10; w_id++){
+            sql = sql.concat(" UNION (SELECT * FROM \"Customer\" WHERE \"C_W_ID\" = " + w_id + " ORDER BY \"C_BALANCE\" DESC LIMIT 10)");
+        }
+        sql = sql.concat(") SELECT * FROM \"tops\" ORDER BY \"C_BALANCE\" DESC LIMIT 10");
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<Customer>(Customer.class));
+    }
+
 
 //
 //    @Override

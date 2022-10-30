@@ -8,6 +8,8 @@ package com.nus.cs5424.storage;
 
 import com.nus.cs5424.data.Customer;
 
+import java.util.List;
+
 /**
  * @author guochenghui
  */
@@ -18,4 +20,6 @@ public interface CustomerStorage {
     boolean updateByPayment(int c_w_id, int c_d_id, int c_id, int payment);
 
     boolean updateByDelivery(int c_w_id, int c_d_id, int c_id, int ol_amount_sum);
+
+    List<Customer> getCustomersByTopBalance();
 }
