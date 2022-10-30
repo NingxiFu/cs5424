@@ -46,10 +46,17 @@ class TestSql {
     @Autowired
     OrderLineStorage orderLineStorage;
 
+
+
     @Test
     void stock() {
         Stock query = stockStorage.query(1, 1);
         System.out.println(query.toString());
+    }
+
+    @Test
+    void district(){
+        districtStorage.updateNext_O_ID(1,3, 3002);
     }
 
     @Test

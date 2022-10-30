@@ -17,7 +17,7 @@ public interface DistrictStorage {
 
     District getDistrictByIdentifier(int w_id, int d_id);
 
-    boolean updateNext_O_ID(int w_id, int d_id);
+    boolean updateNext_O_ID(int w_id, int d_id, int D_NEXT_ID);
 
     boolean updateD_YTDByPayment(int w_id, int d_id, int payment);
 }

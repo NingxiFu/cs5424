@@ -22,6 +22,7 @@ import com.nus.cs5424.storage.StockStorage;
 import com.nus.cs5424.storage.WarehouseStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -55,6 +56,7 @@ public class NewOrder implements transaction{
     @Autowired
     OrderLineStorage orderLineStorage;
 
+    @Transactional
     @Override
     public void process(String[] args) {
         // TODO 完成tx的编写和输出
@@ -78,11 +80,11 @@ public class NewOrder implements transaction{
         //insert
         int o_id = d_next_o_id;
         BigDecimal o_all_local = new BigDecimal(isAllLocal(w_id, orderLines) ? 1 : 0);
-        Order order = new Order(w_id, d_id, o_id, c_id, o_ol_cnt, o_all_local);
+        Order order = new Order(w_id, d_id, o_id, c_id, o_ol_cnt, o_all_local, new Timestamp(System.currentTimeMillis()));
         orderStorage.add(order);
 
         //update
-        boolean u = districtStorage.updateNext_O_ID(w_id, d_id);
+        boolean u = districtStorage.updateNext_O_ID(w_id, d_id, o_id + 1);
         if(!u) System.out.println("更新失败");
 
 
@@ -119,8 +121,15 @@ public class NewOrder implements transaction{
         String[] orderLinesStrArr = orderLinesString.split("\n");
         for (int i = 0; i < orderLinesStrArr.length; i++) {
             String[] args = orderLinesStrArr[i].split(",");
-            // TODO: 完成这里的初始化
-            OrderLine orderLine = new OrderLine();
+            // ol_number
+            // ol_i_id
+            // ol_supply_w_id
+            // ol_quantity
+            OrderLine orderLine = new OrderLine(
+                    i + 1,
+                    Integer.parseInt(args[0]),
+                    Integer.parseInt(args[1]),
+                    new BigDecimal(args[2]));
             orderLines.add(orderLine);
         }
         return orderLines;
@@ -128,8 +137,8 @@ public class NewOrder implements transaction{
 
     private boolean isAllLocal(int w_id, List<OrderLine> orderLines) {
         for (OrderLine orderLine : orderLines) {
-            int s_w_id = orderLine.getOl_w_id();
-            if (w_id == s_w_id) {
+            int ol_supply_w_id = orderLine.getOl_supply_w_id();
+            if (w_id != ol_supply_w_id) {
                 return false;
             }
         }
@@ -170,7 +179,7 @@ public class NewOrder implements transaction{
             BigDecimal i_price = item.getI_price();
             String i_name = item.getI_name();
 
-            int ol_n = orderLine.getOl_o_id();
+            int ol_n = orderLine.getOl_number();
             Timestamp ol_delivery_d = null;
             BigDecimal ol_amount = ol_quantity.multiply(i_price);
 

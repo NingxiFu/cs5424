@@ -33,8 +33,8 @@ public class DistrictStorageImpl extends BaseStorage implements DistrictStorage 
     }
 
     @Override
-    public boolean updateNext_O_ID(int w_id, int d_id) {
-        String sql = "UPDATE " + TABLE + " SET \"D_NEXT_O_ID\" = \"D_NEXT_O_ID\" + 1 WHERE \"D_W_ID\" = " + w_id + " AND " +  "\"D_ID\" = " + d_id;
+    public boolean updateNext_O_ID(int w_id, int d_id, int D_NEXT_O_ID) {
+        String sql = "UPDATE " + TABLE + " SET \"D_NEXT_O_ID\" = " + D_NEXT_O_ID + "WHERE \"D_W_ID\" = " + w_id + " AND " +  "\"D_ID\" = " + d_id;
         return jdbcTemplate.update(sql) > 0;
     }
 

@@ -40,8 +40,8 @@ public class StockStorageImpl extends BaseStorage implements StockStorage {
 
     @Override
     public boolean update(int w_id, int i_id, BigDecimal s_quantity, BigDecimal s_ytd, int s_order_cnt, int s_remote_cnt) {
-        String sql = String.format("UPDATE stock SET s_quantity = %s, s_ytd = %s, s_order_cnt = %d, s_remote_cnt = %d " +
-                "WHERE s_w_id = ? AND s_i_id = ? IF s_order_cnt = ?", s_quantity, s_ytd, s_order_cnt, s_remote_cnt);
+        String sql = String.format("UPDATE " + TABLE + " SET \"S_QUANTITY\" = %s, \"S_YTD\" = %s, \"S_ORDER_CNT\" = %d, \"S_REMOTE_CNT\" = %d " +
+                " WHERE \"S_W_ID\" = %d AND \"S_I_ID\" = %d", s_quantity, s_ytd, s_order_cnt, s_remote_cnt, w_id, i_id);
         int update = jdbcTemplate.update(sql);
         return update > 0;
     }

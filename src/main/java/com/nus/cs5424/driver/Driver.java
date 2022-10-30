@@ -25,7 +25,7 @@ public class Driver {
     @Autowired
     NewOrder newOrder;
 
-    private static final String tx_file = "/Users/guochenghui/Desktop/编程资源-PDF文档.nosync/cs5424/project_files/xact_files/0.txt";
+    private static final String tx_file = "/Users/guochenghui/Desktop/编程资源-PDF文档.nosync/cs5424/project_files/xact_files/testOrder.txt";
 
     public long doTransactions(){
         // 读取文件
@@ -67,6 +67,7 @@ public class Driver {
             switch (type) {
                 case "N":
                     newOrder.process(args);
+                    break;
                 default:
                     System.out.println("没有找到匹配的tx");
             }
