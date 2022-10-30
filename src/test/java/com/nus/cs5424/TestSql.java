@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -66,7 +67,7 @@ class TestSql {
         int c_w_id = 5;
         int c_d_id = 1;
         int c_id = 2;
-        int payment = 10000;
+        BigDecimal payment = BigDecimal.valueOf(10000);
 //transaction:
 //        warehouseStorage.updateW_YTDByPayment(c_w_id, payment);
 //        districtStorage.updateD_YTDByPayment(c_w_id, c_d_id, payment);

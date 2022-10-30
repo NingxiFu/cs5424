@@ -6,7 +6,9 @@
  */
 package com.nus.cs5424.driver;
 
+import com.nus.cs5424.txs.Delivery;
 import com.nus.cs5424.txs.NewOrder;
+import com.nus.cs5424.txs.Payment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +27,13 @@ public class Driver {
     @Autowired
     NewOrder newOrder;
 
-    private static final String tx_file = "/Users/guochenghui/Desktop/编程资源-PDF文档.nosync/cs5424/project_files/xact_files/testOrder.txt";
+    @Autowired
+    Payment payment_t;
+
+    @Autowired
+    Delivery delivery_t;
+
+    private static final String tx_file = "/Users/funingxi/Documents/_NUS_STUDY/sem2/CS5424 Distributed Database/Project/project_files/xact_files/1.txt";
 
     public long doTransactions(){
         // 读取文件
@@ -66,7 +74,13 @@ public class Driver {
             // TODO: 根据tx选择对应的内容
             switch (type) {
                 case "N":
-                    newOrder.process(args);
+//                    newOrder.process(args);
+                    break;
+                case "P":
+//                    payment_t.process(args);
+                    break;
+                case "D":
+                    delivery_t.process(args);
                     break;
                 default:
                     System.out.println("没有找到匹配的tx");
