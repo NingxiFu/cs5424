@@ -12,6 +12,7 @@ import com.nus.cs5424.storage.StockStorage;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -35,5 +36,13 @@ public class StockStorageImpl extends BaseStorage implements StockStorage {
                 + " AND " +  "\"S_I_ID\" IN " + item_ids.toString().replace('[','(').replace(']', ')')
                 + " AND " +  "\"S_QUANTITY\" < " + threshold;
         return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
+    @Override
+    public boolean update(int w_id, int i_id, BigDecimal s_quantity, BigDecimal s_ytd, int s_order_cnt, int s_remote_cnt) {
+        String sql = String.format("UPDATE stock SET s_quantity = %s, s_ytd = %s, s_order_cnt = %d, s_remote_cnt = %d " +
+                "WHERE s_w_id = ? AND s_i_id = ? IF s_order_cnt = ?", s_quantity, s_ytd, s_order_cnt, s_remote_cnt);
+        int update = jdbcTemplate.update(sql);
+        return update > 0;
     }
 }

@@ -28,4 +28,5 @@ public class OrderLine{
     private BigDecimal ol_quantity;
     private String ol_dist_info;
 
+
 }

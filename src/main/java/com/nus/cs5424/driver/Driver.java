@@ -6,6 +6,8 @@
  */
 package com.nus.cs5424.driver;
 
+import com.nus.cs5424.txs.NewOrder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -19,6 +21,9 @@ import java.util.Scanner;
  */
 @Service
 public class Driver {
+
+    @Autowired
+    NewOrder newOrder;
 
     private static final String tx_file = "/Users/guochenghui/Desktop/编程资源-PDF文档.nosync/cs5424/project_files/xact_files/0.txt";
 
@@ -61,7 +66,7 @@ public class Driver {
             // TODO: 根据tx选择对应的内容
             switch (type) {
                 case "N":
-                    System.out.println("执行Order");
+                    newOrder.process(args);
                 default:
                     System.out.println("没有找到匹配的tx");
             }
