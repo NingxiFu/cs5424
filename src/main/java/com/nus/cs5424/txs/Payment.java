@@ -35,9 +35,9 @@ public class Payment implements transaction{
         int c_d_id = Integer.parseInt(args[2]);
         int c_id = Integer.parseInt(args[3]);
         BigDecimal payment = BigDecimal.valueOf(Float.parseFloat(args[4]));
-//        warehouseStorage.updateW_YTDByPayment(c_w_id, payment);
-//        districtStorage.updateD_YTDByPayment(c_w_id, c_d_id, payment);
-//        customerStorage.updateByPayment(c_w_id, c_d_id, c_id, payment);
+        warehouseStorage.updateW_YTDByPayment(c_w_id, payment);
+        districtStorage.updateD_YTDByPayment(c_w_id, c_d_id, payment);
+        customerStorage.updateByPayment(c_w_id, c_d_id, c_id, payment);
         Customer c = customerStorage.getCustomerByIdentifier(c_w_id, c_d_id, c_id);
         System.out.println("Customer's Identifier: " + c.getC_w_id() + ", " + c.getC_d_id() + + c.getC_id() + ",\tName: "
                 + c.getC_first() + ", " + c.getC_middle() + ", " + c.getC_last() + ",\tAddress: "

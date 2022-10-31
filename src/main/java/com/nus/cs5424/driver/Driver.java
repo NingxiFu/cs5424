@@ -6,9 +6,7 @@
  */
 package com.nus.cs5424.driver;
 
-import com.nus.cs5424.txs.Delivery;
-import com.nus.cs5424.txs.NewOrder;
-import com.nus.cs5424.txs.Payment;
+import com.nus.cs5424.txs.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +30,21 @@ public class Driver {
 
     @Autowired
     Delivery delivery_t;
+
+    @Autowired
+    OrderStatus orderStatus_t;
+
+    @Autowired
+    StockLevel stockLevel_t;
+
+    @Autowired
+    PopularItem popularItem_t;
+
+    @Autowired
+    TopBalance topBalance_t;
+
+    @Autowired
+    RelatedCustomer relatedCustomer_t;
 
     private static final String tx_file = "/Users/funingxi/Documents/_NUS_STUDY/sem2/CS5424 Distributed Database/Project/project_files/xact_files/1.txt";
 
@@ -80,7 +93,22 @@ public class Driver {
 //                    payment_t.process(args);
                     break;
                 case "D":
-                    delivery_t.process(args);
+//                    delivery_t.process(args);
+                    break;
+                case "O":
+//                    orderStatus_t.process(args);
+                    break;
+                case "S":
+//                    stockLevel_t.process(args);
+                    break;
+                case "I":
+//                    popularItem_t.process(args);
+                    break;
+                case "T":
+//                    topBalance_t.process(args);
+                    break;
+                case "R":
+//                    relatedCustomer_t.process(args);
                     break;
                 default:
                     System.out.println("没有找到匹配的tx");

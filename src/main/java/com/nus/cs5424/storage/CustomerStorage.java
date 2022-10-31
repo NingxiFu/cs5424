@@ -8,6 +8,7 @@ package com.nus.cs5424.storage;
 
 import com.nus.cs5424.data.Customer;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -17,9 +18,9 @@ public interface CustomerStorage {
 
     Customer getCustomerByIdentifier(int c_w_id, int c_d_id, int c_id);
 
-    boolean updateByPayment(int c_w_id, int c_d_id, int c_id, int payment);
+    boolean updateByPayment(int c_w_id, int c_d_id, int c_id, BigDecimal payment);
 
-    boolean updateByDelivery(int c_w_id, int c_d_id, int c_id, int ol_amount_sum);
+    boolean updateByDelivery(int c_w_id, int c_d_id, int c_id, BigDecimal ol_amount_sum);
 
     List<Customer> getCustomersByTopBalance();
 }

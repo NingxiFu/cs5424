@@ -56,4 +56,12 @@ public class OrderStorageImpl extends BaseStorage implements OrderStorage {
         return jdbcTemplate.update(sql) > 0;
     }
 
+    @Override
+    public Order getLastOrderByIdentifier(int o_w_id, int o_d_id, int o_id) {
+        String sql = "SELECT * FROM " + TABLE + " WHERE \"O_W_ID\" = " + o_w_id + " AND " + "\"O_D_ID\" = " + o_d_id + " AND " + "\"O_ID\" = " + o_id;
+        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<Order>(Order.class));
+    }
+
+
+
 }

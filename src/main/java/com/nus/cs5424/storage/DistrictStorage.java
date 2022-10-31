@@ -8,6 +8,8 @@ package com.nus.cs5424.storage;
 
 import com.nus.cs5424.data.District;
 
+import java.math.BigDecimal;
+
 /**
  * @author guochenghui
  */
@@ -19,5 +21,5 @@ public interface DistrictStorage {
 
     boolean updateNext_O_ID(int w_id, int d_id, int D_NEXT_ID);
 
-    boolean updateD_YTDByPayment(int w_id, int d_id, int payment);
+    boolean updateD_YTDByPayment(int w_id, int d_id, BigDecimal payment);
 }

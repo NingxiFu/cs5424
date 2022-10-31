@@ -46,7 +46,7 @@ public class Delivery implements transaction{
 
             orderStorage.updateCarrierIdByOldestOrder(w_id, d_id, o_id, carrier_id);
             orderLineStorage.updateDelivery_DByOneOrder(w_id, d_id, o_id);
-            int ol_amount_sum = orderLineStorage.getSumOfAmountByOneOrder(w_id, d_id, o_id);
+            BigDecimal ol_amount_sum = orderLineStorage.getSumOfAmountByOneOrder(w_id, d_id, o_id);
             customerStorage.updateByDelivery(w_id, d_id, c_id, ol_amount_sum);
         }
     }

@@ -12,6 +12,8 @@ import com.nus.cs5424.storage.DistrictStorage;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+
 /**
  * @author guochenghui
  */
@@ -39,7 +41,7 @@ public class DistrictStorageImpl extends BaseStorage implements DistrictStorage 
     }
 
     @Override
-    public boolean updateD_YTDByPayment(int w_id, int d_id, int payment) {
+    public boolean updateD_YTDByPayment(int w_id, int d_id, BigDecimal payment) {
         String sql = "UPDATE " + TABLE + " SET \"D_YTD\" = \"D_YTD\" + " + payment + " WHERE \"D_W_ID\" = " + w_id + " AND " +  "\"D_ID\" = " + d_id;
         return jdbcTemplate.update(sql) > 0;
     }

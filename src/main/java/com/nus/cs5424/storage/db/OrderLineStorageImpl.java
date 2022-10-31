@@ -12,6 +12,7 @@ import com.nus.cs5424.storage.OrderLineStorage;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -50,9 +51,9 @@ public class OrderLineStorageImpl extends BaseStorage implements OrderLineStorag
     }
 
     @Override
-    public int getSumOfAmountByOneOrder(int ol_w_id, int ol_d_id, int ol_o_id) {
+    public BigDecimal getSumOfAmountByOneOrder(int ol_w_id, int ol_d_id, int ol_o_id) {
         String sql = "SELECT SUM(\"OL_AMOUNT\") FROM " + TABLE + " WHERE \"OL_W_ID\" = " + ol_w_id + " AND " + "\"OL_D_ID\" = " + ol_d_id + " AND " + "\"OL_O_ID\" = " + ol_o_id;
-        return jdbcTemplate.queryForObject(sql, Integer.class);
+        return jdbcTemplate.queryForObject(sql, BigDecimal.class);
     }
 
     @Override
@@ -63,5 +64,23 @@ public class OrderLineStorageImpl extends BaseStorage implements OrderLineStorag
                 + "\"OL_O_ID\" BETWEEN " + left + " AND " + right;
         return jdbcTemplate.queryForList(sql, Integer.class);
     }
+
+    @Override
+    public List<OrderLine> getOrderlinesByPopularItemsInOneOrder(int ol_w_id, int ol_d_id, int ol_o_id) {
+        String sql = "WITH \"tops\" AS (SELECT * FROM \"OrderLine\" WHERE \"OL_W_ID\" = " + ol_w_id + " AND \"OL_D_ID\" = " + ol_d_id + " AND \"OL_O_ID\" = " + ol_o_id
+                + ") SELECT * FROM \"tops\" WHERE \"OL_QUANTITY\" = (SELECT MAX(\"OL_QUANTITY\") FROM  \"tops\")";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<OrderLine>(OrderLine.class));
+    }
+
+    @Override
+    public Integer getCountByLastOrdersContainsTheItem(int ol_w_id, int ol_d_id, int ol_i_id, int next_o_id, int num_last_orders) {
+        int left = next_o_id - num_last_orders;
+        int right = next_o_id - 1;
+        String sql = "SELECT COUNT(*) FROM " + TABLE + " WHERE \"OL_W_ID\" = " + ol_w_id + " AND " + "\"OL_D_ID\" = " + ol_d_id + " AND "
+                + "\"OL_O_ID\" BETWEEN " + left + " AND " + right + " AND \"OL_I_ID\" = " + ol_i_id;
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
+
 
 }

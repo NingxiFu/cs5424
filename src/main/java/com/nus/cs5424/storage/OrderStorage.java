@@ -23,4 +23,5 @@ public interface OrderStorage {
 
     boolean updateCarrierIdByOldestOrder(int o_w_id, int o_d_id, int o_id, int o_carrier_id);
 
+    Order getLastOrderByIdentifier(int o_w_id, int o_d_id, int o_id);
 }

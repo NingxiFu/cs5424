@@ -8,6 +8,8 @@ package com.nus.cs5424.storage;
 
 import com.nus.cs5424.data.Warehouse;
 
+import java.math.BigDecimal;
+
 /**
  * @author guochenghui
  */
@@ -17,5 +19,5 @@ public interface WarehouseStorage {
 
     Warehouse getWarehouseByIdentifier(int w_id);
 
-    boolean updateW_YTDByPayment(int w_id, int payment);
+    boolean updateW_YTDByPayment(int w_id, BigDecimal payment);
 }

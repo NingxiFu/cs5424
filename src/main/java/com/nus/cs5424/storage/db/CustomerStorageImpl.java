@@ -12,6 +12,7 @@ import com.nus.cs5424.storage.CustomerStorage;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ public class CustomerStorageImpl extends BaseStorage implements CustomerStorage 
     }
 
     @Override
-    public boolean updateByPayment(int c_w_id, int c_d_id, int c_id, int payment) {
+    public boolean updateByPayment(int c_w_id, int c_d_id, int c_id, BigDecimal payment) {
         String sql = "UPDATE " + TABLE + " SET \"C_BALANCE\" = \"C_BALANCE\" - " + payment +
                 ", \"C_YTD_PAYMENT\" = \"C_YTD_PAYMENT\" + " + payment + ", \"C_PAYMENT_CNT\" = \"C_PAYMENT_CNT\" + 1 " +
                 " WHERE \"C_W_ID\" = " + c_w_id + " AND " +  "\"C_D_ID\" = " + c_d_id + " AND " +  "\"C_ID\" = " + c_id;
@@ -37,7 +38,7 @@ public class CustomerStorageImpl extends BaseStorage implements CustomerStorage 
     }
 
     @Override
-    public boolean updateByDelivery(int c_w_id, int c_d_id, int c_id, int ol_amount_sum) {
+    public boolean updateByDelivery(int c_w_id, int c_d_id, int c_id, BigDecimal ol_amount_sum) {
         String sql = "UPDATE " + TABLE + " SET \"C_BALANCE\" = \"C_BALANCE\" + " + ol_amount_sum +
                 ", \"C_DELIVERY_CNT\" = \"C_DELIVERY_CNT\" + 1 " +
                 " WHERE \"C_W_ID\" = " + c_w_id + " AND " +  "\"C_D_ID\" = " + c_d_id + " AND " +  "\"C_ID\" = " + c_id;

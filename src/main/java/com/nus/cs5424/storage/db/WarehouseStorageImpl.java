@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -48,7 +49,7 @@ public class WarehouseStorageImpl extends BaseStorage implements WarehouseStorag
     }
 
     @Override
-    public boolean updateW_YTDByPayment(int w_id, int payment){
+    public boolean updateW_YTDByPayment(int w_id, BigDecimal payment){
         String sql = "UPDATE " + TABLE + " SET \"W_YTD\" = \"W_YTD\" + " + payment + " WHERE \"W_ID\" = " + w_id;
         return jdbcTemplate.update(sql) > 0;
     }

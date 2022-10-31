@@ -8,6 +8,7 @@ package com.nus.cs5424.storage;
 
 import com.nus.cs5424.data.OrderLine;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -21,7 +22,11 @@ public interface OrderLineStorage {
 
     boolean updateDelivery_DByOneOrder(int ol_w_id, int ol_d_id, int ol_o_id);
 
-    int getSumOfAmountByOneOrder(int ol_w_id, int ol_d_id, int ol_o_id);
+    BigDecimal getSumOfAmountByOneOrder(int ol_w_id, int ol_d_id, int ol_o_id);
 
     List<Integer> getItemIdsByLastOrders(int ol_w_id, int ol_d_id, int next_o_id, int num_last_orders);
+
+    List<OrderLine> getOrderlinesByPopularItemsInOneOrder(int ol_w_id, int ol_d_id, int ol_o_id);
+
+    Integer getCountByLastOrdersContainsTheItem(int ol_w_id, int ol_d_id, int ol_i_id, int next_o_id,  int num_last_orders);
 }
