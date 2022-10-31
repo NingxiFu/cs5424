@@ -3,7 +3,6 @@ import com.nus.cs5424.data.*;
 import com.nus.cs5424.storage.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -30,7 +29,6 @@ public class Payment implements transaction{
     @Autowired
     OrderLineStorage orderLineStorage;
 
-    @Transactional
     @Override
     public void process(String[] args) {
         int c_w_id = Integer.parseInt(args[1]);
