@@ -73,9 +73,11 @@ public class NewOrder implements transaction{
         Customer customer = customerStorage.getCustomerByIdentifier(w_id, d_id, c_id);
         Warehouse warehouse = warehouseStorage.getWarehouseByIdentifier(w_id);
         District district = districtStorage.getDistrictByIdentifier(w_id, d_id);
+        System.out.println(district.toString());
 
         //get
         int d_next_o_id = district.getD_next_o_id();
+        System.out.println(d_next_o_id);
 
         //insert
         int o_id = d_next_o_id;

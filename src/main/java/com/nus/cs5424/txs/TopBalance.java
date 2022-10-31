@@ -4,6 +4,7 @@ import com.nus.cs5424.data.Customer;
 import com.nus.cs5424.storage.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class TopBalance implements transaction{
     @Autowired
     OrderLineStorage orderLineStorage;
 
+    @Transactional
     @Override
     public void process(String[] args) {
 //transaction:
