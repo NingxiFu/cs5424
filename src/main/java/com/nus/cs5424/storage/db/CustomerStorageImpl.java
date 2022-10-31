@@ -30,6 +30,12 @@ public class CustomerStorageImpl extends BaseStorage implements CustomerStorage 
     }
 
     @Override
+    public List<Integer> getCustomerByDistrict(int c_w_id, int c_d_id) {
+        String sql = "SELECT \"C_ID\" FROM " + TABLE + " WHERE \"C_W_ID\" = " + c_w_id + " AND " +  "\"C_D_ID\" = " + c_d_id;
+        return jdbcTemplate.queryForList(sql, Integer.class);
+    }
+
+    @Override
     public boolean updateByPayment(int c_w_id, int c_d_id, int c_id, BigDecimal payment) {
         String sql = "UPDATE " + TABLE + " SET \"C_BALANCE\" = \"C_BALANCE\" - " + payment +
                 ", \"C_YTD_PAYMENT\" = \"C_YTD_PAYMENT\" + " + payment + ", \"C_PAYMENT_CNT\" = \"C_PAYMENT_CNT\" + 1 " +

@@ -56,13 +56,13 @@ public class PopularItem implements transaction{
                 Integer i_id = ol.getOl_i_id();
                 Item i = itemStorage.query(i_id);
                 items.put(i.getI_id(), i.getI_name());
-                System.out.println("Item name: " + items.get(i_id) + "\t\tQuantity ordered: " + ol.getOl_quantity());
+                System.out.println("Item name: " + items.get(i_id) + " \tQuantity ordered: " + ol.getOl_quantity());
             }
         }
         System.out.println("\nThe percentage of examined orders that contain each popular item:");
         for (Object i_id : items.keySet()){
             int count = orderLineStorage.getCountByLastOrdersContainsTheItem(w_id, d_id, Integer.parseInt(i_id.toString()), next_o_id, num_last_orders);
-            System.out.println("Item name: " + items.get(i_id)  + "\tPercentage: " + String.format("%.2f", (float)count*100/num_last_orders) + "%");
+            System.out.println("Item name: " + items.get(i_id)  + " \tPercentage: " + String.format("%.2f", (float)count*100/num_last_orders) + "%");
         }
     }
 }

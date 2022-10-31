@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author guochenghui
@@ -41,6 +42,21 @@ public class OrderLineStorageImpl extends BaseStorage implements OrderLineStorag
         String sql = "SELECT * FROM " + TABLE + " WHERE \"OL_W_ID\" = " + ol_w_id + " AND " + "\"OL_D_ID\" = " + ol_d_id + " AND " + "\"OL_O_ID\" = " + ol_o_id
                 + " ORDER BY \"OL_NUMBER\" ASC";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<OrderLine>(OrderLine.class));
+    }
+
+    @Override
+    public List<OrderLine> getOrderLinesContainItemSetByOneOrder(int ol_w_id, int ol_d_id, int ol_o_id, Set<Integer> given_i_id_l) {
+        String sql = "SELECT * FROM " + TABLE + " WHERE \"OL_W_ID\" = " + ol_w_id + " AND " + "\"OL_D_ID\" = " + ol_d_id + " AND " + "\"OL_O_ID\" = " + ol_o_id
+                + " AND \"OL_I_ID\" IN " + given_i_id_l.toString().replace('[','(').replace(']', ')');
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<OrderLine>(OrderLine.class));
+    }
+
+    @Override
+    public List<Integer> getOrderLinesContainItemSetByDistrict(int ol_w_id, int ol_d_id, Set<Integer> given_i_id_l) {
+        String sql = "SELECT \"OL_O_ID\" FROM " + TABLE + " WHERE \"OL_W_ID\" = " + ol_w_id + " AND " + "\"OL_D_ID\" = " + ol_d_id
+                + " AND \"OL_I_ID\" IN " + given_i_id_l.toString().replace('[','(').replace(']', ')')
+                + " GROUP BY \"OL_O_ID\" HAVING COUNT(\"OL_I_ID\") >= 2";
+        return jdbcTemplate.queryForList(sql, Integer.class);
     }
 
     @Override

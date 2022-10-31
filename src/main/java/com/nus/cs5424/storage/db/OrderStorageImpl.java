@@ -12,6 +12,8 @@ import com.nus.cs5424.storage.OrderStorage;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author guochenghui
  */
@@ -40,6 +42,19 @@ public class OrderStorageImpl extends BaseStorage implements OrderStorage {
         String sql = "SELECT * FROM " + TABLE + " WHERE \"O_W_ID\" = " + o_w_id + " AND " + "\"O_D_ID\" = " + o_d_id + " AND " + "\"O_C_ID\" = " + o_c_id
                 + " ORDER BY \"O_ENTRY_D\" DESC LIMIT 1";
         return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<Order>(Order.class));
+    }
+
+    @Override
+    public List<Integer> getAllOrderIdByCustomer(int o_w_id, int o_d_id, int o_c_id) {
+        String sql = "SELECT \"O_ID\" FROM " + TABLE + " WHERE \"O_W_ID\" = " + o_w_id + " AND " + "\"O_D_ID\" = " + o_d_id + " AND " + "\"O_C_ID\" = " + o_c_id;
+        return jdbcTemplate.queryForList(sql, Integer.class);
+    }
+
+    @Override
+    public List<Integer> getAllCIdByOIds(int o_w_id, int o_d_id, List<Integer> o_ids) {
+        String sql = "SELECT DISTINCT \"O_C_ID\" FROM " + TABLE + " WHERE \"O_W_ID\" = " + o_w_id + " AND " + "\"O_D_ID\" = " + o_d_id + " AND "
+                + "\"O_ID\" IN " + o_ids.toString().replace('[','(').replace(']', ')');
+        return jdbcTemplate.queryForList(sql, Integer.class);
     }
 
     @Override

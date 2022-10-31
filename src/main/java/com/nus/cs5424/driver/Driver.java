@@ -46,7 +46,7 @@ public class Driver {
     @Autowired
     RelatedCustomer relatedCustomer_t;
 
-    private static final String tx_file = "/Users/funingxi/Documents/_NUS_STUDY/sem2/CS5424 Distributed Database/Project/project_files/xact_files/1.txt";
+    private static final String tx_file = "/Users/funingxi/Documents/_NUS_STUDY/sem2/CS5424 Distributed Database/Project/project_files/xact_files/0.txt";
 
     public long doTransactions(){
         // 读取文件

@@ -18,6 +18,8 @@ public interface CustomerStorage {
 
     Customer getCustomerByIdentifier(int c_w_id, int c_d_id, int c_id);
 
+    List<Integer> getCustomerByDistrict(int c_w_id, int c_d_id);
+
     boolean updateByPayment(int c_w_id, int c_d_id, int c_id, BigDecimal payment);
 
     boolean updateByDelivery(int c_w_id, int c_d_id, int c_id, BigDecimal ol_amount_sum);

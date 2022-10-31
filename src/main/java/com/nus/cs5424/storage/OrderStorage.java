@@ -9,6 +9,7 @@ package com.nus.cs5424.storage;
 import com.nus.cs5424.data.Order;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * @author guochenghui
@@ -18,6 +19,10 @@ public interface OrderStorage {
     Order add(Order order);
 
     Order getLastOrderByCustomer(int o_w_id, int o_d_id, int o_c_id);
+
+    List<Integer> getAllOrderIdByCustomer(int o_w_id, int o_d_id, int o_c_id);
+
+    List<Integer> getAllCIdByOIds(int o_w_id, int o_d_id, List<Integer> o_ids);
 
     Order getOldestOrderByDistrict(int w_id, int d_id);
 

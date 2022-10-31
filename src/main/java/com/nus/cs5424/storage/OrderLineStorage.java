@@ -10,6 +10,7 @@ import com.nus.cs5424.data.OrderLine;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author guochenghui
@@ -19,6 +20,10 @@ public interface OrderLineStorage {
     OrderLine add(OrderLine orderLine);
 
     List<OrderLine> getOrderLinesByOneOrder(int ol_w_id, int ol_d_id, int ol_o_id);
+
+    List<OrderLine> getOrderLinesContainItemSetByOneOrder(int ol_w_id, int ol_d_id, int ol_o_id, Set<Integer> given_i_id_l);
+
+    List<Integer> getOrderLinesContainItemSetByDistrict(int ol_w_id, int ol_d_id, Set<Integer> given_i_id_l);
 
     boolean updateDelivery_DByOneOrder(int ol_w_id, int ol_d_id, int ol_o_id);
 
