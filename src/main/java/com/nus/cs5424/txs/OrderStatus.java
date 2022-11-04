@@ -19,12 +19,6 @@ public class OrderStatus implements transaction{
     ItemStorage itemStorage;
 
     @Autowired
-    WarehouseStorage warehouseStorage;
-
-    @Autowired
-    DistrictStorage districtStorage;
-
-    @Autowired
     OrderStorage orderStorage;
 
     @Autowired
@@ -35,6 +29,7 @@ public class OrderStatus implements transaction{
 
     @Override
     public void process(String[] args) {
+//2.4 Order-Status Transaction
         int c_w_id = Integer.parseInt(args[1]);
         int c_d_id = Integer.parseInt(args[2]);
         int c_id = Integer.parseInt(args[3]);
@@ -44,8 +39,8 @@ public class OrderStatus implements transaction{
         List<OrderLine> ols = orderLineStorage.getOrderLinesByOneOrder(o.getO_w_id(), o.getO_d_id(), o.getO_id());
 //outputs:
         System.out.println("Customer's Name: " + c.getC_first() + ", " + c.getC_middle() + ", " + c.getC_last() +
-                ",\tBalance: " + c.getC_balance());
-        System.out.println("Customer's Last Order ---- Order number: " + o.getO_id() + ",\tEntry date and time: " + o.getO_entry_d() + ",\tCarrier identifier: " + o.getO_carrier_id());
+                ",\tBalance: " + c.getC_balance()
+                + "\nCustomer's Last Order ---- Order number: " + o.getO_id() + ",\tEntry date and time: " + o.getO_entry_d() + ",\tCarrier identifier: " + o.getO_carrier_id());
         for (OrderLine ol : ols){
             System.out.println("Item number: " + ol.getOl_i_id() + ",\tSupplying warehouse number: " + ol.getOl_supply_w_id() + ",\tQuantity ordered: "
                     + ol.getOl_quantity() + ",\tTotal price for ordered item: " + ol.getOl_amount() + ",\tData and time of delivery: " + ol.getOl_delivery_d());

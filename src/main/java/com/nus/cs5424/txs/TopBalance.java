@@ -1,6 +1,7 @@
 package com.nus.cs5424.txs;
 
 import com.nus.cs5424.data.Customer;
+import com.nus.cs5424.data.WarehouseDistrict;
 import com.nus.cs5424.storage.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,10 +17,7 @@ public class TopBalance implements transaction{
     ItemStorage itemStorage;
 
     @Autowired
-    WarehouseStorage warehouseStorage;
-
-    @Autowired
-    DistrictStorage districtStorage;
+    WarehouseDistrictStorage warehouseDistrictStorage;
 
     @Autowired
     OrderStorage orderStorage;
@@ -32,13 +30,15 @@ public class TopBalance implements transaction{
 
     @Override
     public void process(String[] args) {
+//2.7 Top-Balance Transaction
 //transaction:
         List<Customer> cs = customerStorage.getCustomersByTopBalance();
 //outputs:
         for (Customer c : cs){
-            System.out.println("Customer's Name: " + c.getC_first() + ", " + c.getC_middle() + ", " + c.getC_last() + ",\tBalance: " + c.getC_balance());
-            System.out.println("Warehouse's Name: " + warehouseStorage.getWarehouseByIdentifier(c.getC_w_id()).getW_name());
-            System.out.println("District's Name: " + districtStorage.getDistrictByIdentifier(c.getC_w_id(), c.getC_d_id()).getD_name() + "\n");
+            WarehouseDistrict wd = warehouseDistrictStorage.getWarehouseDistrictByIdentifier(c.getC_w_id(), c.getC_d_id());
+            System.out.println("Customer's Name: " + c.getC_first() + ", " + c.getC_middle() + ", " + c.getC_last() + ",\tBalance: " + c.getC_balance()
+            + "\nWarehouse's Name: " + wd.getW_name()
+            + "\nDistrict's Name: " + wd.getD_name());
         }
     }
 }

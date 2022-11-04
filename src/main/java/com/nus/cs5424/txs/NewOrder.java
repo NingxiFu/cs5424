@@ -6,20 +6,8 @@
  */
 package com.nus.cs5424.txs;
 
-import com.nus.cs5424.data.Customer;
-import com.nus.cs5424.data.District;
-import com.nus.cs5424.data.Item;
-import com.nus.cs5424.data.Order;
-import com.nus.cs5424.data.OrderLine;
-import com.nus.cs5424.data.Stock;
-import com.nus.cs5424.data.Warehouse;
-import com.nus.cs5424.storage.CustomerStorage;
-import com.nus.cs5424.storage.DistrictStorage;
-import com.nus.cs5424.storage.ItemStorage;
-import com.nus.cs5424.storage.OrderLineStorage;
-import com.nus.cs5424.storage.OrderStorage;
-import com.nus.cs5424.storage.StockStorage;
-import com.nus.cs5424.storage.WarehouseStorage;
+import com.nus.cs5424.data.*;
+import com.nus.cs5424.storage.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,11 +29,14 @@ public class NewOrder implements transaction{
     @Autowired
     ItemStorage itemStorage;
 
-    @Autowired
-    WarehouseStorage warehouseStorage;
+//    @Autowired
+//    WarehouseStorage warehouseStorage;
+//
+//    @Autowired
+//    DistrictStorage districtStorage;
 
     @Autowired
-    DistrictStorage districtStorage;
+    WarehouseDistrictStorage warehouseDistrictStorage;
 
     @Autowired
     OrderStorage orderStorage;
@@ -71,11 +62,12 @@ public class NewOrder implements transaction{
         List<OrderLine> orderLines = parseOrderLines(args[5]);
 
         Customer customer = customerStorage.getCustomerByIdentifier(w_id, d_id, c_id);
-        Warehouse warehouse = warehouseStorage.getWarehouseByIdentifier(w_id);
-        District district = districtStorage.getDistrictByIdentifier(w_id, d_id);
+//        Warehouse warehouse = warehouseStorage.getWarehouseByIdentifier(w_id);
+//        District district = districtStorage.getDistrictByIdentifier(w_id, d_id);
+        WarehouseDistrict warehouseDistrict = warehouseDistrictStorage.getWarehouseDistrictByIdentifier(w_id, d_id);
 
         //get
-        int d_next_o_id = district.getD_next_o_id();
+        int d_next_o_id = warehouseDistrict.getD_next_o_id();
 
         //insert
         int o_id = d_next_o_id;
@@ -84,7 +76,7 @@ public class NewOrder implements transaction{
         orderStorage.add(order);
 
         //update
-        boolean u = districtStorage.updateNext_O_ID(w_id, d_id, o_id + 1);
+        boolean u = warehouseDistrictStorage.updateNext_O_ID(w_id, d_id, o_id + 1);
         if(!u) System.out.println("更新失败");
 
 
@@ -96,8 +88,8 @@ public class NewOrder implements transaction{
                 "(W_ID, D_ID, C_ID): (%d, %d, %d), C_LAST: %s, C_CREDIT: %s, C_DISCOUNT: %f\n",
                 w_id, d_id, c_id, c_last, c_credit, c_discount.floatValue()
         );
-        BigDecimal w_tax = warehouse.getW_tax();
-        BigDecimal d_tax = district.getD_tax();
+        BigDecimal w_tax = warehouseDistrict.getW_tax();
+        BigDecimal d_tax = warehouseDistrict.getD_tax();
         System.out.printf("W_TAX: %f, D_TAX: %f\n",
                 w_tax.floatValue(), d_tax.floatValue());
 

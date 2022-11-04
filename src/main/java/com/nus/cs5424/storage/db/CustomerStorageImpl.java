@@ -53,9 +53,18 @@ public class CustomerStorageImpl extends BaseStorage implements CustomerStorage 
 
     @Override
     public List<Customer> getCustomersByTopBalance() {
-        String sql = "WITH \"tops\" AS((SELECT * FROM \"Customer\" WHERE \"C_W_ID\" = 1 ORDER BY \"C_BALANCE\" DESC LIMIT 10)";
-        for (int w_id = 2; w_id <= 10; w_id++){
-            sql = sql.concat(" UNION (SELECT * FROM \"Customer\" WHERE \"C_W_ID\" = " + w_id + " ORDER BY \"C_BALANCE\" DESC LIMIT 10)");
+        String sql = "WITH \"tops\" AS(";
+        for (int w_id = 1; w_id <= 10; w_id++){
+            for(int d_id = 1; d_id <= 10; d_id++){
+                if (w_id == 1 & d_id == 1){
+                    sql = sql.concat("(SELECT * FROM \"Customer\" WHERE \"C_W_ID\" = " + w_id
+                            + " AND \"C_D_ID\" = " + d_id + " ORDER BY \"C_BALANCE\" DESC LIMIT 10)");
+                }
+                else {
+                    sql = sql.concat(" UNION (SELECT * FROM \"Customer\" WHERE \"C_W_ID\" = " + w_id
+                            + " AND \"C_D_ID\" = " + d_id + " ORDER BY \"C_BALANCE\" DESC LIMIT 10)");
+                }
+            }
         }
         sql = sql.concat(") SELECT * FROM \"tops\" ORDER BY \"C_BALANCE\" DESC LIMIT 10");
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<Customer>(Customer.class));

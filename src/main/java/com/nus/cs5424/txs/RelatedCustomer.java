@@ -19,10 +19,7 @@ public class RelatedCustomer implements transaction{
     ItemStorage itemStorage;
 
     @Autowired
-    WarehouseStorage warehouseStorage;
-
-    @Autowired
-    DistrictStorage districtStorage;
+    WarehouseDistrictStorage warehouseDistrictStorage;
 
     @Autowired
     OrderStorage orderStorage;
@@ -35,6 +32,7 @@ public class RelatedCustomer implements transaction{
 
     @Override
     public void process(String[] args) {
+//2.8 Related-Customer Transaction
 //inputs:
         int given_w_id = Integer.parseInt(args[1]);
         int given_d_id = Integer.parseInt(args[2]);

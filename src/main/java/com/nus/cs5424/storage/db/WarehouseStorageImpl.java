@@ -43,7 +43,7 @@ public class WarehouseStorageImpl extends BaseStorage implements WarehouseStorag
     }
 
     @Override
-    public Warehouse getWarehouseByIdentifier(int w_id) {
+    public Warehouse getWarehouseByIdentifier(int w_id) { //merged into WarehouseDistrict getWarehouseDistrictByIdentifier method.
         String sql = "SELECT * FROM " + TABLE + " WHERE \"W_ID\" = " + w_id;
         return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<Warehouse>(Warehouse.class));
     }

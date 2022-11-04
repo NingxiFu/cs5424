@@ -19,12 +19,6 @@ public class Delivery implements transaction{
     ItemStorage itemStorage;
 
     @Autowired
-    WarehouseStorage warehouseStorage;
-
-    @Autowired
-    DistrictStorage districtStorage;
-
-    @Autowired
     OrderStorage orderStorage;
 
     @Autowired
@@ -35,6 +29,7 @@ public class Delivery implements transaction{
 
     @Override
     public void process(String[] args) {
+//2.3 Delivery Transaction
         int w_id = Integer.parseInt(args[1]);
         int carrier_id = Integer.parseInt(args[2]);
 //transaction:

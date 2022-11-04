@@ -40,7 +40,7 @@ public class OrderStorageImpl extends BaseStorage implements OrderStorage {
     @Override
     public Order getLastOrderByCustomer(int o_w_id, int o_d_id, int o_c_id) {
         String sql = "SELECT * FROM " + TABLE + " WHERE \"O_W_ID\" = " + o_w_id + " AND " + "\"O_D_ID\" = " + o_d_id + " AND " + "\"O_C_ID\" = " + o_c_id
-                + " ORDER BY \"O_ENTRY_D\" DESC LIMIT 1";
+                + " ORDER BY \"O_ID\" ASC LIMIT 1";
         return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<Order>(Order.class));
     }
 

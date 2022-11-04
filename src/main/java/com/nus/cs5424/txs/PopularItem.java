@@ -21,10 +21,7 @@ public class PopularItem implements transaction{
     ItemStorage itemStorage;
 
     @Autowired
-    WarehouseStorage warehouseStorage;
-
-    @Autowired
-    DistrictStorage districtStorage;
+    WarehouseDistrictStorage warehouseDistrictStorage;
 
     @Autowired
     OrderStorage orderStorage;
@@ -37,20 +34,22 @@ public class PopularItem implements transaction{
 
     @Override
     public void process(String[] args) {
+//2.6 Popular-Item Transaction
         int w_id = Integer.parseInt(args[1]);
         int d_id = Integer.parseInt(args[2]);
         int num_last_orders = Integer.parseInt(args[3]);
 //transaction:
-        System.out.println("District identifier: " + w_id + "," + d_id);
-        System.out.println("Number of last orders to be examined: " + num_last_orders);
-        int next_o_id = districtStorage.getNext_O_IDByPrimaryKey(w_id, d_id);
+        System.out.println("District identifier: " + w_id + "," + d_id
+                + "\nNumber of last orders to be examined: " + num_last_orders);
+        int next_o_id = warehouseDistrictStorage.getNext_O_IDByPrimaryKey(w_id, d_id);
+
         Map items = new HashMap<Integer, String>();
         for (int o_id = next_o_id - num_last_orders; o_id < next_o_id; o_id++){
             Order o = orderStorage.getLastOrderByIdentifier(w_id, d_id, o_id);
-            System.out.println("\nOrder number: " + o_id);
-            System.out.println("Entry date and time: " + o.getO_entry_d());
             Customer c = customerStorage.getCustomerByIdentifier(w_id, d_id, o.getO_c_id());
-            System.out.println("Customer name: " + c.getC_first() + ", " + c.getC_middle() + ", " + c.getC_last());
+            System.out.println("\nOrder number: " + o_id
+                    + "\nEntry date and time: " + o.getO_entry_d()
+                    + "\nCustomer name: " + c.getC_first() + ", " + c.getC_middle() + ", " + c.getC_last());
             List<OrderLine> ols = orderLineStorage.getOrderlinesByPopularItemsInOneOrder(w_id, d_id, o_id);
             for (OrderLine ol : ols){
                 Integer i_id = ol.getOl_i_id();

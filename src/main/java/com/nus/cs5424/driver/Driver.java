@@ -60,6 +60,7 @@ public class Driver {
         }
 
         long res = 0;
+        long startTime = System.currentTimeMillis();
 
         while(sc.hasNext()){
             String[] args = sc.nextLine().split(",");
@@ -87,28 +88,28 @@ public class Driver {
             // TODO: 根据tx选择对应的内容
             switch (type) {
                 case "N":
-//                    newOrder.process(args);
+                    newOrder.process(args);
                     break;
                 case "P":
-//                    payment_t.process(args);
+                    payment_t.process(args);
                     break;
                 case "D":
-//                    delivery_t.process(args);
+                    delivery_t.process(args);
                     break;
                 case "O":
-//                    orderStatus_t.process(args);
+                    orderStatus_t.process(args);
                     break;
                 case "S":
-//                    stockLevel_t.process(args);
+                    stockLevel_t.process(args);
                     break;
                 case "I":
-//                    popularItem_t.process(args);
+                    popularItem_t.process(args);
                     break;
                 case "T":
-//                    topBalance_t.process(args);
+                    topBalance_t.process(args);
                     break;
                 case "R":
-//                    relatedCustomer_t.process(args);
+                    relatedCustomer_t.process(args);
                     break;
                 default:
                     System.out.println("没有找到匹配的tx");
@@ -116,6 +117,9 @@ public class Driver {
 
 
             res++;
+
+            System.out.println(res);
+            if(res % 10 == 0) System.out.println("res:"  + res + " time: " + (System.currentTimeMillis() - startTime));
         }
 
         return res;

@@ -18,10 +18,7 @@ public class StockLevel implements transaction{
     ItemStorage itemStorage;
 
     @Autowired
-    WarehouseStorage warehouseStorage;
-
-    @Autowired
-    DistrictStorage districtStorage;
+    WarehouseDistrictStorage warehouseDistrictStorage;
 
     @Autowired
     OrderStorage orderStorage;
@@ -34,12 +31,13 @@ public class StockLevel implements transaction{
 
     @Override
     public void process(String[] args) {
+//2.5 Stock-level Transaction
         int w_id = Integer.parseInt(args[1]);
         int d_id = Integer.parseInt(args[2]);
         int threshold = Integer.parseInt(args[3]);
         int num_last_orders = Integer.parseInt(args[4]);
 //transaction:
-        int next_o_id = districtStorage.getNext_O_IDByPrimaryKey(w_id, d_id);
+        int next_o_id = warehouseDistrictStorage.getNext_O_IDByPrimaryKey(w_id, d_id);
         List<Integer> item_ids = orderLineStorage.getItemIdsByLastOrders(w_id, d_id, next_o_id, num_last_orders);
         int num_of_i = stockStorage.getNumOfItemBelowThresholdByWarehouse(w_id, item_ids, threshold);
 //outputs:
