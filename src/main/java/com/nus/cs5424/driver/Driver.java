@@ -134,6 +134,8 @@ public class Driver {
             transactionTimeList.add(end - start);
             totalTime += (end - start);
 
+            System.out.println("事务类型： " + type + " 所花费的时间： " + (end - start));
+
             // TEST
 //            if(res % 10 == 0) System.out.println("res : " + res + " time :" + (System.currentTimeMillis() - start));
         }

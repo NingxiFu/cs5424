@@ -27,6 +27,9 @@ public class PopularItem implements transaction{
     WarehouseStorage warehouseStorage;
 
     @Autowired
+    WarehouseDistrictStorage warehouseDistrictStorage;
+
+    @Autowired
     DistrictStorage districtStorage;
 
     @Autowired
@@ -46,7 +49,7 @@ public class PopularItem implements transaction{
 //transaction:
         System.out.println("District identifier: " + w_id + "," + d_id);
         System.out.println("Number of last orders to be examined: " + num_last_orders);
-        int next_o_id = districtStorage.getNext_O_IDByPrimaryKey(w_id, d_id);
+        int next_o_id = warehouseDistrictStorage.getNext_O_IDByPrimaryKey(w_id, d_id);
 
         // 1. 先获取最后L个order
         Set<Integer> range = IntStream.range(next_o_id - num_last_orders, next_o_id).boxed().collect(Collectors.toSet());
