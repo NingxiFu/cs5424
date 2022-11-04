@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.FileNotFoundException;
+
 /**
  * @author guochenghui
  */
@@ -25,6 +27,10 @@ public class TestLoadData {
 
     @Test
     public void testRead(){
-        driver.doTransactions();
+        try {
+            driver.doTransactions();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
