@@ -10,6 +10,7 @@ import com.nus.cs5424.data.Order;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author guochenghui
@@ -29,4 +30,6 @@ public interface OrderStorage {
     boolean updateCarrierIdByOldestOrder(int o_w_id, int o_d_id, int o_id, int o_carrier_id);
 
     Order getLastOrderByIdentifier(int o_w_id, int o_d_id, int o_id);
+
+    List<Order> getOrders(int o_w_id, int o_d_id, Set<Integer> o_ids);
 }

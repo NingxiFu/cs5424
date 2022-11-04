@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author guochenghui
@@ -265,6 +266,27 @@ class TestSql {
         for (String c_identifier: c_identifiers){
             System.out.println(c_identifier);
         }
+
+    }
+
+    @Test
+    public void getOrders(){
+//        List<Order> orders = orderStorage.getOrders(1, 1, Arrays.asList(1, 2, 3));
+//        orders.forEach(o -> {
+//            System.out.println(o);
+//        });
+    }
+
+    @Test
+    public void getCustomers(){
+        Set<Integer> set = new HashSet<>();
+        set.add(1);
+        set.add(2);
+        set.add(3);
+
+        Map<Integer, List<Customer>> customerMaps = customerStorage.getCustomers(1, 1, set).stream().collect(Collectors.groupingBy(Customer::getC_id));
+
+        System.out.println("aaa");
     }
 
 }

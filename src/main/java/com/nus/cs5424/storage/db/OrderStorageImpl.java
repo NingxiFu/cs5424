@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author guochenghui
@@ -77,6 +78,11 @@ public class OrderStorageImpl extends BaseStorage implements OrderStorage {
         return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<Order>(Order.class));
     }
 
+    @Override
+    public List<Order> getOrders(int o_w_id, int o_d_id, Set<Integer> o_ids) {
+        String sql =  "SELECT * FROM " + TABLE + " WHERE \"O_W_ID\" = " + o_w_id + " AND " + "\"O_D_ID\" = " + o_d_id + " AND " + "\"O_ID\" IN " + o_ids.toString().replace('[','(').replace(']', ')');
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<Order>(Order.class));
+    }
 
 
 }

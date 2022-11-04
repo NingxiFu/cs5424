@@ -7,20 +7,33 @@
 package com.nus.cs5424.driver;
 
 import com.nus.cs5424.txs.*;
+import com.nus.cs5424.util.ThreadPrintStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+import com.google.common.math.Quantiles;
+import com.google.common.math.Stats;
 
 /**
  * @author guochenghui
  */
 @Service
 public class Driver {
+
+    private static String outFolder = "output/transactions/";
+    private static String errFolder = "output/performance/";
+    private static int index = 1;
 
     @Autowired
     NewOrder newOrder;
@@ -46,9 +59,9 @@ public class Driver {
     @Autowired
     RelatedCustomer relatedCustomer_t;
 
-    private static final String tx_file = "/Users/funingxi/Documents/_NUS_STUDY/sem2/CS5424 Distributed Database/Project/project_files/xact_files/0.txt";
+    private static final String tx_file = "project_files/xact_files/testBenchMark.txt";
 
-    public long doTransactions(){
+    public long doTransactions() throws FileNotFoundException {
         // 读取文件
         // 根据对应的标识调用对应的tx
         // 执行成功返回 + 1
@@ -59,8 +72,9 @@ public class Driver {
             throw new RuntimeException(e);
         }
 
+        long totalTime = 0;
+        List<Long> transactionTimeList = new ArrayList<>();
         long res = 0;
-        long startTime = System.currentTimeMillis();
 
         while(sc.hasNext()){
             String[] args = sc.nextLine().split(",");
@@ -82,10 +96,9 @@ public class Driver {
                 args = argsList.toArray(new String[argsList.size()]);
             }
 
-            for (String s : args) System.out.print(s + " ");
-            System.out.println();
+            // TODO: 这里开始计算
+            long start = System.currentTimeMillis();
 
-            // TODO: 根据tx选择对应的内容
             switch (type) {
                 case "N":
                     newOrder.process(args);
@@ -115,14 +128,61 @@ public class Driver {
                     System.out.println("没有找到匹配的tx");
             }
 
+            long end = System.currentTimeMillis();
 
             res++;
+            transactionTimeList.add(end - start);
+            totalTime += (end - start);
 
-            System.out.println(res);
-            if(res % 10 == 0) System.out.println("res:"  + res + " time: " + (System.currentTimeMillis() - startTime));
+            // TEST
+//            if(res % 10 == 0) System.out.println("res : " + res + " time :" + (System.currentTimeMillis() - start));
         }
 
+        Collections.sort(transactionTimeList);
+        double mean = Stats.meanOf(transactionTimeList);
+        double median = Quantiles.median().compute(transactionTimeList);
+        double percentile95 = Quantiles.percentiles().index(95).compute(transactionTimeList);
+        double percentile99 = Quantiles.percentiles().index(99).compute(transactionTimeList);
+        Double execTimeSec = (double) totalTime / 1000.0;
+
+
+        try {
+            BufferedWriter out = new BufferedWriter(new FileWriter("benchMark.txt"));
+            out.write("Total Number of transactions processed: "+ res +"\n");
+            out.write("Total elapsed time for processing the transactions: " + execTimeSec + "\n");
+            out.write("Transaction throughput: " + (double) res / (double) execTimeSec +"\n");
+            out.write("Average transaction latency: " + mean +"\n");
+            out.write("Median transaction latency: " + median + "\n");
+            out.write("95th percentile transaction latency: " + percentile95 + "\n");
+            out.write("99th percentile transaction latency: " + percentile99 + "\n");
+            out.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        // output
+//        System.out.close();
+//        this.setOut("_stderr.txt", false);
+//        System.out.println("Total Number of transactions processed: "+ res);
+//        System.out.println("Total elapsed time for processing the transactions: " + execTimeSec);
+//        System.out.println("Transaction throughput: " + (double) res / (double) execTimeSec);
+//        System.out.println("Average transaction latency: " + mean);
+//        System.out.println("Median transaction latency: " + median);
+//        System.out.println("95th percentile transaction latency: " + percentile95);
+//        System.out.println("99th percentile transaction latency: " + percentile99);
+
         return res;
+    }
+
+    private void setOut(String filenNameEnd, boolean isOut) throws FileNotFoundException {
+        File file;
+        if(isOut){
+            file = new File(outFolder+index+filenNameEnd);}
+        else{
+            file = new File(errFolder+index+filenNameEnd);}
+
+        FileOutputStream fos = new FileOutputStream(file);
+        PrintStream ps = new PrintStream(fos);
+        ((ThreadPrintStream)System.out).setThreadOut(ps);
     }
 
 }

@@ -10,6 +10,7 @@ import com.nus.cs5424.data.Customer;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author guochenghui
@@ -17,6 +18,8 @@ import java.util.List;
 public interface CustomerStorage {
 
     Customer getCustomerByIdentifier(int c_w_id, int c_d_id, int c_id);
+
+    List<Customer> getCustomers(int c_w_id, int c_d_id, Set<Integer> c_id);
 
     List<Integer> getCustomerByDistrict(int c_w_id, int c_d_id);
 

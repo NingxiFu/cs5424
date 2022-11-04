@@ -34,3 +34,31 @@ build/
 
 ### data
 .project_file/
+/project_files/xact_files/0.txt
+/project_files/xact_files/1.txt
+/project_files/xact_files/2.txt
+/project_files/xact_files/3.txt
+/project_files/xact_files/4.txt
+/project_files/xact_files/5.txt
+/project_files/xact_files/6.txt
+/project_files/xact_files/7.txt
+/project_files/xact_files/8.txt
+/project_files/xact_files/9.txt
+/project_files/xact_files/10.txt
+/project_files/xact_files/11.txt
+/project_files/xact_files/12.txt
+/project_files/xact_files/13.txt
+/project_files/xact_files/14.txt
+/project_files/xact_files/15.txt
+/project_files/xact_files/16.txt
+/project_files/xact_files/17.txt
+/project_files/xact_files/18.txt
+/project_files/xact_files/19.txt
+/project_files/data_files/customer.csv
+/project_files/data_files/district.csv
+/project_files/data_files/item.csv
+/project_files/data_files/order.csv
+/project_files/data_files/order-line.csv
+/project_files/data_files/stock.csv
+/project_files/data_files/warehouse.csv
+/project_files/xact_files/testBenchMark.txt
