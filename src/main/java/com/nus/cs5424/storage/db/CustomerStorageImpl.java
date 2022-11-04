@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author guochenghui
@@ -27,6 +28,12 @@ public class CustomerStorageImpl extends BaseStorage implements CustomerStorage 
     public Customer getCustomerByIdentifier(int c_w_id, int c_d_id, int c_id) {
         String sql = "SELECT * FROM " + TABLE + " WHERE \"C_W_ID\" = " + c_w_id + " AND " +  "\"C_D_ID\" = " + c_d_id + " AND " +  "\"C_ID\" = " + c_id;
         return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<Customer>(Customer.class));
+    }
+
+    @Override
+    public List<Customer> getCustomers(int c_w_id, int c_d_id, Set<Integer> c_id) {
+        String sql = "SELECT * FROM " + TABLE + " WHERE \"C_W_ID\" = " + c_w_id + " AND " +  "\"C_D_ID\" = " + c_d_id + " AND " +  "\"C_ID\" IN " + c_id.toString().replace('[','(').replace(']', ')');
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Customer.class));
     }
 
     @Override

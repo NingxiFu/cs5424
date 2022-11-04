@@ -46,7 +46,7 @@ public class Driver {
     @Autowired
     RelatedCustomer relatedCustomer_t;
 
-    private static final String tx_file = "/Users/funingxi/Documents/_NUS_STUDY/sem2/CS5424 Distributed Database/Project/project_files/xact_files/0.txt";
+    private static final String tx_file = "/Users/guochenghui/Desktop/编程资源-PDF文档.nosync/cs5424/project_files/xact_files/0.txt";
 
     public long doTransactions(){
         // 读取文件
@@ -102,7 +102,7 @@ public class Driver {
 //                    stockLevel_t.process(args);
                     break;
                 case "I":
-//                    popularItem_t.process(args);
+                    popularItem_t.process(args);
                     break;
                 case "T":
 //                    topBalance_t.process(args);
