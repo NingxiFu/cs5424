@@ -19,9 +19,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.Callable;
+
 import com.google.common.math.Quantiles;
 import com.google.common.math.Stats;
 
@@ -29,11 +32,12 @@ import com.google.common.math.Stats;
  * @author guochenghui
  */
 @Service
-public class Driver {
+public class Driver implements Callable<Double> {
 
     private static String outFolder = "output/transactions/";
     private static String errFolder = "output/performance/";
-    private static int index = 1;
+    private static String xactDir = "project_files/xact_files/";
+    private static List<String> serverIPs =  new ArrayList<>(Arrays.asList("192.168.56.159","192.168.56.160","192.168.56.161","192.168.56.162","192.168.56.163"));
 
     @Autowired
     NewOrder newOrder;
@@ -137,7 +141,7 @@ public class Driver {
             System.out.println("事务类型： " + type + " 所花费的时间： " + (end - start));
 
             // TEST
-//            if(res % 10 == 0) System.out.println("res : " + res + " time :" + (System.currentTimeMillis() - start));
+            if(res % 10 == 0) System.out.println("res : " + res + " time :" + (System.currentTimeMillis() - start));
         }
 
         Collections.sort(transactionTimeList);
@@ -175,16 +179,9 @@ public class Driver {
         return res;
     }
 
-    private void setOut(String filenNameEnd, boolean isOut) throws FileNotFoundException {
-        File file;
-        if(isOut){
-            file = new File(outFolder+index+filenNameEnd);}
-        else{
-            file = new File(errFolder+index+filenNameEnd);}
 
-        FileOutputStream fos = new FileOutputStream(file);
-        PrintStream ps = new PrintStream(fos);
-        ((ThreadPrintStream)System.out).setThreadOut(ps);
+    @Override
+    public Double call() throws Exception {
+        return null;
     }
-
 }
