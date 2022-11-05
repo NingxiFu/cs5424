@@ -20,9 +20,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+
 
 import com.google.common.math.Quantiles;
 import com.google.common.math.Stats;
@@ -33,17 +31,14 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Scope("prototype")
-public class Driver implements Callable<Double>{
+public class Driver implements Callable<Double> {
 
-    private static String outFolder = "output/transactions/";
-    private static String errFolder = "output/performance/";
-    private static String xactDir = "project_files/xact_files/";
-    private static int clientCount = 2;
+    private static final String tx_file = "project_files/xact_files/%s.txt";
+    private static final String benchMark = "benchMark{%s}.txt";
 
-    //TODO: 读取的index文件
     public int index = 0;
 
-    public void setIndex(int index){
+    public void setIndex(int index) {
         this.index = index;
     }
 
@@ -71,45 +66,15 @@ public class Driver implements Callable<Double>{
     @Autowired
     RelatedCustomer relatedCustomer_t;
 
-    private static final String tx_file = "project_files/xact_files/testDelivery%s.txt";//test%s
-    private static final String benchMark = "benchMarkDelivery{%s}.txt";//benchMark{%s}
-    private static final String test_file = "project_files/xact_files/testBenchMark.txt";
-
-//    public long multiThread() {
-//        ExecutorService executorService = Executors.newFixedThreadPool(clientCount);
-//        List<Callable<Double>> callableList = new ArrayList<>(clientCount);
-////
-////        for(int i=1; i<=clientCount; i++){
-////            Callable<Double> callable = new Driver();
-////            callableList.add(callable);
-////            //Future<Long> future = executorService.submit(callable);
-////            //futureList.add(future);
-////        }
-////
-////
-//
-//        for(int i = 0; i < clientCount; i++){
-//            int index = i;
-//            executorService.submit(() -> this.doTransactions(index));
-//        }
-//
-//        try {//等待直到所有任务完成
-//            executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.MINUTES);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//
-//        executorService.shutdown();
-//
-//        return 1;
-//    }
+//    private static final String tx_file = "project_files/xact_files/testDelivery%s.txt";//test%s
+//    private static final String benchMark = "benchMarkDelivery{%s}.txt";//benchMark{%s}
+//    private static final String test_file = "project_files/xact_files/testBenchMark.txt";
 
     public double doTransactions(int index) {
-        // 读取文件
-        // 根据对应的标识调用对应的tx
-        // 执行成功返回 + 1
-        // 生成对应client的文件
-        System.out.println("Thread Begin");
+        String threadName = Thread.currentThread().getName();
+        long BEGIN_THREAD = System.currentTimeMillis();
+
+        System.out.println("---------------" + threadName + "Thread Begin---------------");
         String readFile = String.format(tx_file, index);
         String writeFile = String.format(benchMark, index);
 
@@ -147,10 +112,8 @@ public class Driver implements Callable<Double>{
                 args = argsList.toArray(new String[argsList.size()]);
             }
 
-            // TODO: 这里开始计算
+            // BEGIN TRANSACTION
             long start = System.currentTimeMillis();
-
-
             try {
                 switch (type) {
                     case "N":
@@ -181,25 +144,23 @@ public class Driver implements Callable<Double>{
                         System.out.println("没有找到匹配的tx");
                 }
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            long end = System.currentTimeMillis();
+            // END TRANSACTION
 
             res++;
+            long end = System.currentTimeMillis();
             transactionTimeList.add(end - start);
             totalTime += (end - start);
 
             // TEST
             System.out.println("事务类型： " + type + " 所花费的时间： " + (end - start));
             if (res % 10 == 0)
-                System.out.println("res : " + res + " time :" + (System.currentTimeMillis() - start));
-            if (res == 100)
-                break;
+                System.out.println("Thread:" + threadName + "res : " + res + " time :" + (end - BEGIN_THREAD));
         }
 
-        System.out.println("ALL tx done");
+        System.out.println("---------------" + threadName + "Transaction Done---------------");
 
         Collections.sort(transactionTimeList);
         double mean = Stats.meanOf(transactionTimeList);

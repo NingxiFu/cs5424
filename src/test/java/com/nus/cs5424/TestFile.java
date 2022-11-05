@@ -9,8 +9,13 @@
 //import org.junit.jupiter.api.Test;
 //
 //import java.io.BufferedWriter;
+//import java.io.File;
+//import java.io.FileNotFoundException;
 //import java.io.FileWriter;
 //import java.io.IOException;
+//import java.util.ArrayList;
+//import java.util.List;
+//import java.util.Scanner;
 //
 ///**
 // * @author guochenghui
@@ -30,6 +35,48 @@
 //            out.close();
 //        } catch (IOException e) {
 //            throw new RuntimeException(e);
+//        }
+//    }
+//
+//    @Test
+//    public void count(){
+//        String folder = "project_files/xact_files/%s.txt";
+//
+//        for (int j = 0; j < 20; j++) {
+//            String fileName = String.format(folder, j);
+//            int count = 0;
+//            // Read Files
+//            Scanner sc = null;
+//            try {
+//                sc = new Scanner(new File(fileName));
+//            } catch (FileNotFoundException e) {
+//                throw new RuntimeException(e);
+//            }
+//
+//            while (sc.hasNext()) {
+//                String[] args = sc.nextLine().split(",");
+//                String type = args[0];
+//
+//                if (type.equals("N")) {
+//                    int n = Integer.parseInt(args[args.length - 1]);
+//                    List<String> orderLines = new ArrayList<String>();
+//                    for (int i = 0; i < n; i++) {
+//                        orderLines.add(sc.nextLine());
+//                    }
+//                    String csv = String.join("\n", orderLines);
+//
+//                    List<String> argsList = new ArrayList<String>();
+//                    for (String arg : args) {
+//                        argsList.add(arg);
+//                    }
+//                    argsList.add(csv);
+//                    args = argsList.toArray(new String[argsList.size()]);
+//                }
+//
+//                count++;
+//            }
+//
+//            System.out.println(count);
 //        }
 //    }
 //

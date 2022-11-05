@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -29,7 +30,7 @@ public class MyCommandLineRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("BEGIN BENCHMARK");
+        System.out.println("-------------------BEGIN BENCHMARK-------------------------");
 
         ExecutorService executorService = Executors.newFixedThreadPool(CLIENT);
         List<Callable<Double>> callableList = new ArrayList<>(CLIENT);
@@ -42,10 +43,28 @@ public class MyCommandLineRunner implements CommandLineRunner {
 
         List<Future<Double>> futureList = executorService.invokeAll(callableList);
 
-        for (Future<Double> future : futureList) {
-            future.get();
+        Double thrPutSum = 0.0;
+        Double min = Double.MAX_VALUE;
+        Double max = Double.MIN_VALUE;
+        for(Future<Double> fut : futureList){
+            try {
+                Double throughPut = fut.get();
+                thrPutSum += throughPut;
+                if(throughPut < min)
+                    min = throughPut;
+                if(throughPut > max)
+                    max = throughPut;
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
         }
+        System.out.println("Average throughput of "+ CLIENT +" clients is"+ (thrPutSum / (double)CLIENT));
+        System.out.println("Minimum throughput of "+ CLIENT +" clients is"+ min);
+        System.out.println("Maximum throughput of "+ CLIENT +" clients is"+ max);
 
-        System.out.println("END BENCHMARK");
+
+        executorService.shutdown();
+
+        System.out.println("-------------------END BENCHMARK-------------------------");
     }
 }
