@@ -6,6 +6,8 @@ import com.nus.cs5424.data.OrderLine;
 import com.nus.cs5424.storage.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,6 +31,7 @@ public class StockLevel implements transaction{
     @Autowired
     OrderLineStorage orderLineStorage;
 
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     @Override
     public void process(String[] args) {
 //2.5 Stock-level Transaction

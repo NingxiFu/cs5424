@@ -40,6 +40,12 @@ public class Driver implements Callable<Double>{
     private static String xactDir = "project_files/xact_files/";
     private static int clientCount = 2;
 
+    //TODO: 读取的index文件
+    public int index = 0;
+
+    public void setIndex(int index){
+        this.index = index;
+    }
 
     @Autowired
     NewOrder newOrder;
@@ -65,7 +71,7 @@ public class Driver implements Callable<Double>{
     @Autowired
     RelatedCustomer relatedCustomer_t;
 
-    private static final String tx_file = "project_files/xact_files/test%s.txt";
+    private static final String tx_file = "project_files/xact_files/%s.txt";
     private static final String benchMark = "benchMark{%s}.txt";
     private static final String test_file = "project_files/xact_files/testBenchMark.txt";
 
@@ -219,6 +225,6 @@ public class Driver implements Callable<Double>{
 
     @Override
     public Double call() throws Exception {
-        return null;
+        return doTransactions(this.index);
     }
 }

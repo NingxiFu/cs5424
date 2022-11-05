@@ -7,9 +7,17 @@
 package com.nus.cs5424;
 
 import com.nus.cs5424.driver.Driver;
+import com.nus.cs5424.util.SpringBeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * @author guochenghui
@@ -17,14 +25,27 @@ import org.springframework.stereotype.Component;
 @Component
 public class MyCommandLineRunner implements CommandLineRunner {
 
-//    @Autowired
-//    Driver driver;
+    private static final int CLIENT = 20;
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("hello world");
+        System.out.println("BEGIN BENCHMARK");
 
-//        driver.multiThread();
+        ExecutorService executorService = Executors.newFixedThreadPool(CLIENT);
+        List<Callable<Double>> callableList = new ArrayList<>(CLIENT);
 
+        for (int i = 0; i < CLIENT; i++) {
+            Driver driver = (Driver) SpringBeanUtil.getBean("driver");
+            driver.setIndex(i);
+            callableList.add(driver);
+        }
+
+        List<Future<Double>> futureList = executorService.invokeAll(callableList);
+
+        for (Future<Double> future : futureList) {
+            future.get();
+        }
+
+        System.out.println("END BENCHMARK");
     }
 }

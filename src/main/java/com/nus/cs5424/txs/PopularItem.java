@@ -7,7 +7,10 @@ import com.nus.cs5424.data.OrderLine;
 import com.nus.cs5424.storage.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Tainted;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +44,7 @@ public class PopularItem implements transaction{
     @Autowired
     OrderLineStorage orderLineStorage;
 
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     @Override
     public void process(String[] args) {
         int w_id = Integer.parseInt(args[1]);

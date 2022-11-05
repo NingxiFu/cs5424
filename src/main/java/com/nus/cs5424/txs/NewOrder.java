@@ -10,6 +10,7 @@ import com.nus.cs5424.data.*;
 import com.nus.cs5424.storage.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
@@ -47,7 +48,7 @@ public class NewOrder implements transaction{
     @Autowired
     OrderLineStorage orderLineStorage;
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     @Override
     public void process(String[] args) {
         // TODO 完成tx的编写和输出
