@@ -71,38 +71,38 @@ public class Driver implements Callable<Double>{
     @Autowired
     RelatedCustomer relatedCustomer_t;
 
-    private static final String tx_file = "project_files/xact_files/%s.txt";
-    private static final String benchMark = "benchMark{%s}.txt";
+    private static final String tx_file = "project_files/xact_files/testDelivery%s.txt";//test%s
+    private static final String benchMark = "benchMarkDelivery{%s}.txt";//benchMark{%s}
     private static final String test_file = "project_files/xact_files/testBenchMark.txt";
 
-    public long multiThread() {
-        ExecutorService executorService = Executors.newFixedThreadPool(clientCount);
-        List<Callable<Double>> callableList = new ArrayList<>(clientCount);
+//    public long multiThread() {
+//        ExecutorService executorService = Executors.newFixedThreadPool(clientCount);
+//        List<Callable<Double>> callableList = new ArrayList<>(clientCount);
+////
+////        for(int i=1; i<=clientCount; i++){
+////            Callable<Double> callable = new Driver();
+////            callableList.add(callable);
+////            //Future<Long> future = executorService.submit(callable);
+////            //futureList.add(future);
+////        }
+////
+////
 //
-//        for(int i=1; i<=clientCount; i++){
-//            Callable<Double> callable = new Driver();
-//            callableList.add(callable);
-//            //Future<Long> future = executorService.submit(callable);
-//            //futureList.add(future);
+//        for(int i = 0; i < clientCount; i++){
+//            int index = i;
+//            executorService.submit(() -> this.doTransactions(index));
 //        }
 //
+//        try {//等待直到所有任务完成
+//            executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.MINUTES);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 //
-
-        for(int i = 0; i < clientCount; i++){
-            int index = i;
-            executorService.submit(() -> this.doTransactions(index));
-        }
-
-        try {//等待直到所有任务完成
-            executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.MINUTES);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        executorService.shutdown();
-
-        return 1;
-    }
+//        executorService.shutdown();
+//
+//        return 1;
+//    }
 
     public double doTransactions(int index) {
         // 读取文件
@@ -154,28 +154,28 @@ public class Driver implements Callable<Double>{
             try {
                 switch (type) {
                     case "N":
-                        newOrder.process(args);
+//                        newOrder.process(args);
                         break;
                     case "P":
-                        payment_t.process(args);
+//                        payment_t.process(args);
                         break;
                     case "D":
                         delivery_t.process(args);
                         break;
                     case "O":
-                        orderStatus_t.process(args);
+//                        orderStatus_t.process(args);
                         break;
                     case "S":
-                        stockLevel_t.process(args);
+//                        stockLevel_t.process(args);
                         break;
                     case "I":
-                        popularItem_t.process(args);
+//                        popularItem_t.process(args);
                         break;
                     case "T":
-                        topBalance_t.process(args);
+//                        topBalance_t.process(args);
                         break;
                     case "R":
-                        relatedCustomer_t.process(args);
+//                        relatedCustomer_t.process(args);
                         break;
                     default:
                         System.out.println("没有找到匹配的tx");
@@ -195,6 +195,8 @@ public class Driver implements Callable<Double>{
             System.out.println("事务类型： " + type + " 所花费的时间： " + (end - start));
             if (res % 10 == 0)
                 System.out.println("res : " + res + " time :" + (System.currentTimeMillis() - start));
+            if (res == 100)
+                break;
         }
 
         System.out.println("ALL tx done");

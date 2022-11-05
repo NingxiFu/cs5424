@@ -37,15 +37,21 @@ public class Delivery implements transaction{
         int carrier_id = Integer.parseInt(args[2]);
 //transaction:
         for (int d_id = 1; d_id <= 10; d_id++) { //when debugging, can change to d_id <= 1.
-            Order o = orderStorage.getOldestOrderByDistrict(w_id, d_id);
+//            Order o = orderStorage.getOldestOrderByDistrict(w_id, d_id);
+            Order o = orderStorage.updateCarrierIdByOldestOrderReturningO_ID_O_C_ID(w_id, d_id, carrier_id);//
+            if (o == null){
+                continue;
+            }
             int o_id = o.getO_id();
             int c_id = o.getO_c_id();
 //            System.out.println(o_id + " " + c_id);
 
-            orderStorage.updateCarrierIdByOldestOrder(w_id, d_id, o_id, carrier_id);
+//            orderStorage.updateCarrierIdByOldestOrder(w_id, d_id, o_id, carrier_id);
             orderLineStorage.updateDelivery_DByOneOrder(w_id, d_id, o_id);
-            BigDecimal ol_amount_sum = orderLineStorage.getSumOfAmountByOneOrder(w_id, d_id, o_id);
-            customerStorage.updateByDelivery(w_id, d_id, c_id, ol_amount_sum);
+
+//            BigDecimal ol_amount_sum = orderLineStorage.getSumOfAmountByOneOrder(w_id, d_id, o_id);
+//            customerStorage.updateByDelivery(w_id, d_id, c_id, ol_amount_sum);
+            customerStorage.updateByDeliveryContainsOlSelect(w_id, d_id, c_id, o_id);//
         }
     }
 }

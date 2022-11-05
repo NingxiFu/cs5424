@@ -59,6 +59,15 @@ public class CustomerStorageImpl extends BaseStorage implements CustomerStorage 
     }
 
     @Override
+    public boolean updateByDeliveryContainsOlSelect(int c_w_id, int c_d_id, int c_id, int o_id) {
+        String sql = "UPDATE " + TABLE + " SET \"C_BALANCE\" = \"C_BALANCE\" + "
+                + "(SELECT SUM(\"OL_AMOUNT\") FROM \"OrderLine\" WHERE \"OL_W_ID\" = " + c_w_id + " AND " + "\"OL_D_ID\" = " + c_d_id + " AND " + "\"OL_O_ID\" = " + o_id +
+                "), \"C_DELIVERY_CNT\" = \"C_DELIVERY_CNT\" + 1 " +
+                " WHERE \"C_W_ID\" = " + c_w_id + " AND " +  "\"C_D_ID\" = " + c_d_id + " AND " +  "\"C_ID\" = " + c_id;
+        return jdbcTemplate.update(sql) > 0;
+    }
+
+    @Override
     public List<Customer> getCustomersByTopBalance() {
         String sql = "WITH \"tops\" AS(";
         for (int w_id = 1; w_id <= 10; w_id++){

@@ -27,5 +27,7 @@ public interface CustomerStorage {
 
     boolean updateByDelivery(int c_w_id, int c_d_id, int c_id, BigDecimal ol_amount_sum);
 
+    boolean updateByDeliveryContainsOlSelect(int c_w_id, int c_d_id, int c_id, int o_id);
+
     List<Customer> getCustomersByTopBalance();
 }
