@@ -11,9 +11,11 @@ public interface WarehouseDistrictStorage {
 
     WarehouseDistrict getWarehouseDistrictByIdentifier(int w_id, int d_id);
 
+    WarehouseDistrict getWarehouseDistrictOnlyReadByIdentifier(int w_id, int d_id);
+
     boolean updateNext_O_ID(int w_id, int d_id, int D_NEXT_ID);
 
-    boolean updateD_YTDByPayment(int w_id, int d_id, BigDecimal payment);
+    WarehouseDistrict updateD_YTDByPayment(int w_id, int d_id, BigDecimal payment);
 
     boolean updateW_YTDByPayment(int w_id, BigDecimal payment);
 }

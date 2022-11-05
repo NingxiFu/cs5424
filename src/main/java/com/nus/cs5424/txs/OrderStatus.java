@@ -29,7 +29,7 @@ public class OrderStatus implements transaction{
     @Autowired
     OrderLineStorage orderLineStorage;
 
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @Override
     public void process(String[] args) {
 //2.4 Order-Status Transaction

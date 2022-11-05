@@ -1,0 +1,7 @@
+Total Number of transactions processed: 100
+Total elapsed time for processing the transactions: 370.946
+Transaction throughput: 0.269581017183094
+Average transaction latency: 3709.4599999999996
+Median transaction latency: 2132.5
+95th percentile transaction latency: 5065.5
+99th percentile transaction latency: 69603.55

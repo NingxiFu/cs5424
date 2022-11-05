@@ -35,15 +35,21 @@ public class WarehouseDistrictStorageImpl extends BaseStorage implements Warehou
     }
 
     @Override
+    public WarehouseDistrict getWarehouseDistrictOnlyReadByIdentifier(int w_id, int d_id) {
+        String sql = "SELECT * FROM " + "\"WarehouseDistrict_Read\"" + " WHERE \"D_W_ID\" = " + w_id + " AND " +  "\"D_ID\" = " + d_id;
+        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<WarehouseDistrict>(WarehouseDistrict.class));
+    }
+
+    @Override
     public boolean updateNext_O_ID(int w_id, int d_id, int D_NEXT_O_ID) {
         String sql = "UPDATE " + TABLE + " SET \"D_NEXT_O_ID\" = " + D_NEXT_O_ID + "WHERE \"D_W_ID\" = " + w_id + " AND " +  "\"D_ID\" = " + d_id;
         return jdbcTemplate.update(sql) > 0;
     }
 
     @Override
-    public boolean updateD_YTDByPayment(int w_id, int d_id, BigDecimal payment) {
-        String sql = "UPDATE " + TABLE + " SET \"D_YTD\" = \"D_YTD\" + " + payment + " WHERE \"D_W_ID\" = " + w_id + " AND " +  "\"D_ID\" = " + d_id;
-        return jdbcTemplate.update(sql) > 0;
+    public WarehouseDistrict updateD_YTDByPayment(int w_id, int d_id, BigDecimal payment) {
+        String sql = "UPDATE " + TABLE + " SET \"D_YTD\" = \"D_YTD\" + " + payment + " WHERE \"D_W_ID\" = " + w_id + " AND " +  "\"D_ID\" = " + d_id + " RETURNING *";
+        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<WarehouseDistrict>(WarehouseDistrict.class));
     }
 
     @Override

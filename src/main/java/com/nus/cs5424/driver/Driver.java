@@ -117,28 +117,28 @@ public class Driver implements Callable<Double> {
             try {
                 switch (type) {
                     case "N":
-//                        newOrder.process(args);
+                        newOrder.process(args);
                         break;
                     case "P":
-//                        payment_t.process(args);
+                        payment_t.process(args);
                         break;
                     case "D":
                         delivery_t.process(args);
                         break;
                     case "O":
-//                        orderStatus_t.process(args);
+                        orderStatus_t.process(args);
                         break;
                     case "S":
-//                        stockLevel_t.process(args);
+                        stockLevel_t.process(args);
                         break;
                     case "I":
-//                        popularItem_t.process(args);
+                        popularItem_t.process(args);
                         break;
                     case "T":
-//                        topBalance_t.process(args);
+                        topBalance_t.process(args);
                         break;
                     case "R":
-//                        relatedCustomer_t.process(args);
+                        relatedCustomer_t.process(args);
                         break;
                     default:
                         System.out.println("没有找到匹配的tx");
@@ -158,6 +158,8 @@ public class Driver implements Callable<Double> {
             System.out.println("事务类型： " + type + " 所花费的时间： " + (end - start));
             if (res % 10 == 0)
                 System.out.println("Thread:" + threadName + "res : " + res + " time :" + (end - BEGIN_THREAD));
+//            if (res == 100)
+//                break;
         }
 
         System.out.println("---------------" + threadName + "Transaction Done---------------");

@@ -30,7 +30,7 @@ public class TopBalance implements transaction{
     @Autowired
     OrderLineStorage orderLineStorage;
 
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @Override
     public void process(String[] args) {
 //2.7 Top-Balance Transaction
@@ -38,7 +38,7 @@ public class TopBalance implements transaction{
         List<Customer> cs = customerStorage.getCustomersByTopBalance();
 //outputs:
         for (Customer c : cs){
-            WarehouseDistrict wd = warehouseDistrictStorage.getWarehouseDistrictByIdentifier(c.getC_w_id(), c.getC_d_id());
+            WarehouseDistrict wd = warehouseDistrictStorage.getWarehouseDistrictOnlyReadByIdentifier(c.getC_w_id(), c.getC_d_id());
             System.out.println("Customer's Name: " + c.getC_first() + ", " + c.getC_middle() + ", " + c.getC_last() + ",\tBalance: " + c.getC_balance()
             + "\nWarehouse's Name: " + wd.getW_name()
             + "\nDistrict's Name: " + wd.getD_name());

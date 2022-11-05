@@ -43,11 +43,11 @@ public class CustomerStorageImpl extends BaseStorage implements CustomerStorage 
     }
 
     @Override
-    public boolean updateByPayment(int c_w_id, int c_d_id, int c_id, BigDecimal payment) {
+    public Customer updateByPayment(int c_w_id, int c_d_id, int c_id, BigDecimal payment) {
         String sql = "UPDATE " + TABLE + " SET \"C_BALANCE\" = \"C_BALANCE\" - " + payment +
                 ", \"C_YTD_PAYMENT\" = \"C_YTD_PAYMENT\" + " + payment + ", \"C_PAYMENT_CNT\" = \"C_PAYMENT_CNT\" + 1 " +
-                " WHERE \"C_W_ID\" = " + c_w_id + " AND " +  "\"C_D_ID\" = " + c_d_id + " AND " +  "\"C_ID\" = " + c_id;
-        return jdbcTemplate.update(sql) > 0;
+                " WHERE \"C_W_ID\" = " + c_w_id + " AND " +  "\"C_D_ID\" = " + c_d_id + " AND " +  "\"C_ID\" = " + c_id + " RETURNING *";
+        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<Customer>(Customer.class));
     }
 
     @Override

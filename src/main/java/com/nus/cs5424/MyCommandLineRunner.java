@@ -46,21 +46,21 @@ public class MyCommandLineRunner implements CommandLineRunner {
         Double thrPutSum = 0.0;
         Double min = Double.MAX_VALUE;
         Double max = Double.MIN_VALUE;
-        for(Future<Double> fut : futureList){
+        for (Future<Double> fut : futureList) {
             try {
                 Double throughPut = fut.get();
                 thrPutSum += throughPut;
-                if(throughPut < min)
+                if (throughPut < min)
                     min = throughPut;
-                if(throughPut > max)
+                if (throughPut > max)
                     max = throughPut;
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
         }
-        System.out.println("Average throughput of "+ CLIENT +" clients is"+ (thrPutSum / (double)CLIENT));
-        System.out.println("Minimum throughput of "+ CLIENT +" clients is"+ min);
-        System.out.println("Maximum throughput of "+ CLIENT +" clients is"+ max);
+        System.out.println("Average throughput of " + CLIENT + " clients is" + (thrPutSum / (double) CLIENT));
+        System.out.println("Minimum throughput of " + CLIENT + " clients is" + min);
+        System.out.println("Maximum throughput of " + CLIENT + " clients is" + max);
 
 
         executorService.shutdown();

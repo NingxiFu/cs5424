@@ -36,11 +36,12 @@ public class Payment implements transaction{
         int c_d_id = Integer.parseInt(args[2]);
         int c_id = Integer.parseInt(args[3]);
         BigDecimal payment = BigDecimal.valueOf(Float.parseFloat(args[4]));
-        warehouseDistrictStorage.updateD_YTDByPayment(c_w_id, c_d_id, payment);
         warehouseDistrictStorage.updateW_YTDByPayment(c_w_id, payment);
-        customerStorage.updateByPayment(c_w_id, c_d_id, c_id, payment);
-        Customer c = customerStorage.getCustomerByIdentifier(c_w_id, c_d_id, c_id);
-        WarehouseDistrict wd = warehouseDistrictStorage.getWarehouseDistrictByIdentifier(c_w_id, c_d_id);
+        WarehouseDistrict wd = warehouseDistrictStorage.updateD_YTDByPayment(c_w_id, c_d_id, payment);
+//        customerStorage.updateByPayment(c_w_id, c_d_id, c_id, payment);
+//        Customer c = customerStorage.getCustomerByIdentifier(c_w_id, c_d_id, c_id);
+        Customer c = customerStorage.updateByPayment(c_w_id, c_d_id, c_id, payment);
+//        WarehouseDistrict wd = warehouseDistrictStorage.getWarehouseDistrictOnlyReadByIdentifier(c_w_id, c_d_id);
         System.out.println("Customer's Identifier: " + c.getC_w_id() + ", " + c.getC_d_id() + + c.getC_id() + ",\tName: "
                 + c.getC_first() + ", " + c.getC_middle() + ", " + c.getC_last() + ",\tAddress: "
                 + c.getC_street_1() + ", " + c.getC_street_2() + ", " + c.getC_city() + ", " + c.getC_state() + ", " + c.getC_zip()

@@ -44,7 +44,7 @@ public class PopularItem implements transaction{
     @Autowired
     OrderLineStorage orderLineStorage;
 
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @Override
     public void process(String[] args) {
         int w_id = Integer.parseInt(args[1]);
@@ -66,10 +66,8 @@ public class PopularItem implements transaction{
         Map items = new HashMap<Integer, String>();
 
         for (Order o : orders) {
-            System.out.println("\nOrder number: " + o.getO_id());
-            System.out.println("Entry date and time: " + o.getO_entry_d());
             Customer c = customerMaps.get(o.getO_c_id()).get(0);
-            System.out.println("Customer name: " + c.getC_first() + ", " + c.getC_middle() + ", " + c.getC_last());
+            System.out.println("Order number: " + o.getO_id() + " \tEntry date and time: " + o.getO_entry_d() + " \tCustomer name: " + c.getC_first() + ", " + c.getC_middle() + ", " + c.getC_last());
             List<OrderLine> ols = orderLineStorage.getOrderlinesByPopularItemsInOneOrder(w_id, d_id,  o.getO_id());
             for (OrderLine ol : ols){
                 Integer i_id = ol.getOl_i_id();
