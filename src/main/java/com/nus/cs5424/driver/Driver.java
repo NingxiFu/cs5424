@@ -7,37 +7,39 @@
 package com.nus.cs5424.driver;
 
 import com.nus.cs5424.txs.*;
-import com.nus.cs5424.util.ThreadPrintStream;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Scope;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import com.google.common.math.Quantiles;
 import com.google.common.math.Stats;
+import org.springframework.stereotype.Service;
 
 /**
  * @author guochenghui
  */
 @Service
-public class Driver implements Callable<Double> {
+@Scope("prototype")
+public class Driver implements Callable<Double>{
 
     private static String outFolder = "output/transactions/";
     private static String errFolder = "output/performance/";
     private static String xactDir = "project_files/xact_files/";
-    private static List<String> serverIPs =  new ArrayList<>(Arrays.asList("192.168.56.159","192.168.56.160","192.168.56.161","192.168.56.162","192.168.56.163"));
+    private static int clientCount = 2;
+
 
     @Autowired
     NewOrder newOrder;
@@ -63,15 +65,54 @@ public class Driver implements Callable<Double> {
     @Autowired
     RelatedCustomer relatedCustomer_t;
 
-    private static final String tx_file = "project_files/xact_files/testBenchMark.txt";
+    private static final String tx_file = "project_files/xact_files/test%s.txt";
+    private static final String benchMark = "benchMark{%s}.txt";
+    private static final String test_file = "project_files/xact_files/testBenchMark.txt";
 
-    public long doTransactions() throws FileNotFoundException {
+    public long multiThread() {
+        ExecutorService executorService = Executors.newFixedThreadPool(clientCount);
+        List<Callable<Double>> callableList = new ArrayList<>(clientCount);
+//
+//        for(int i=1; i<=clientCount; i++){
+//            Callable<Double> callable = new Driver();
+//            callableList.add(callable);
+//            //Future<Long> future = executorService.submit(callable);
+//            //futureList.add(future);
+//        }
+//
+//
+
+        for(int i = 0; i < clientCount; i++){
+            int index = i;
+            executorService.submit(() -> this.doTransactions(index));
+        }
+
+        try {//等待直到所有任务完成
+            executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        executorService.shutdown();
+
+        return 1;
+    }
+
+    public double doTransactions(int index) {
         // 读取文件
         // 根据对应的标识调用对应的tx
         // 执行成功返回 + 1
+        // 生成对应client的文件
+        System.out.println("Thread Begin");
+        String readFile = String.format(tx_file, index);
+        String writeFile = String.format(benchMark, index);
+
+        System.out.println(String.format("ReadFile Name %s", readFile));
+        System.out.println(String.format("WriteFile Name %s", writeFile));
+
         Scanner sc = null;
         try {
-            sc = new Scanner(new File(tx_file));
+            sc = new Scanner(new File(readFile));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -80,7 +121,7 @@ public class Driver implements Callable<Double> {
         List<Long> transactionTimeList = new ArrayList<>();
         long res = 0;
 
-        while(sc.hasNext()){
+        while (sc.hasNext()) {
             String[] args = sc.nextLine().split(",");
             String type = args[0];
 
@@ -93,7 +134,7 @@ public class Driver implements Callable<Double> {
                 String csv = String.join("\n", orderLines);
 
                 List<String> argsList = new ArrayList<String>();
-                for (String arg: args) {
+                for (String arg : args) {
                     argsList.add(arg);
                 }
                 argsList.add(csv);
@@ -103,33 +144,39 @@ public class Driver implements Callable<Double> {
             // TODO: 这里开始计算
             long start = System.currentTimeMillis();
 
-            switch (type) {
-                case "N":
-                    newOrder.process(args);
-                    break;
-                case "P":
-                    payment_t.process(args);
-                    break;
-                case "D":
-                    delivery_t.process(args);
-                    break;
-                case "O":
-                    orderStatus_t.process(args);
-                    break;
-                case "S":
-                    stockLevel_t.process(args);
-                    break;
-                case "I":
-                    popularItem_t.process(args);
-                    break;
-                case "T":
-                    topBalance_t.process(args);
-                    break;
-                case "R":
-                    relatedCustomer_t.process(args);
-                    break;
-                default:
-                    System.out.println("没有找到匹配的tx");
+
+            try {
+                switch (type) {
+                    case "N":
+                        newOrder.process(args);
+                        break;
+                    case "P":
+                        payment_t.process(args);
+                        break;
+                    case "D":
+                        delivery_t.process(args);
+                        break;
+                    case "O":
+                        orderStatus_t.process(args);
+                        break;
+                    case "S":
+                        stockLevel_t.process(args);
+                        break;
+                    case "I":
+                        popularItem_t.process(args);
+                        break;
+                    case "T":
+                        topBalance_t.process(args);
+                        break;
+                    case "R":
+                        relatedCustomer_t.process(args);
+                        break;
+                    default:
+                        System.out.println("没有找到匹配的tx");
+                }
+
+            }catch (Exception e){
+                e.printStackTrace();
             }
 
             long end = System.currentTimeMillis();
@@ -138,11 +185,13 @@ public class Driver implements Callable<Double> {
             transactionTimeList.add(end - start);
             totalTime += (end - start);
 
-            System.out.println("事务类型： " + type + " 所花费的时间： " + (end - start));
-
             // TEST
-            if(res % 10 == 0) System.out.println("res : " + res + " time :" + (System.currentTimeMillis() - start));
+            System.out.println("事务类型： " + type + " 所花费的时间： " + (end - start));
+            if (res % 10 == 0)
+                System.out.println("res : " + res + " time :" + (System.currentTimeMillis() - start));
         }
+
+        System.out.println("ALL tx done");
 
         Collections.sort(transactionTimeList);
         double mean = Stats.meanOf(transactionTimeList);
@@ -151,34 +200,22 @@ public class Driver implements Callable<Double> {
         double percentile99 = Quantiles.percentiles().index(99).compute(transactionTimeList);
         Double execTimeSec = (double) totalTime / 1000.0;
 
-
         try {
-            BufferedWriter out = new BufferedWriter(new FileWriter("benchMark.txt"));
-            out.write("Total Number of transactions processed: "+ res +"\n");
+            BufferedWriter out = new BufferedWriter(new FileWriter(writeFile));
+            out.write("Total Number of transactions processed: " + res + "\n");
             out.write("Total elapsed time for processing the transactions: " + execTimeSec + "\n");
-            out.write("Transaction throughput: " + (double) res / (double) execTimeSec +"\n");
-            out.write("Average transaction latency: " + mean +"\n");
+            out.write("Transaction throughput: " + (double) res / (double) execTimeSec + "\n");
+            out.write("Average transaction latency: " + mean + "\n");
             out.write("Median transaction latency: " + median + "\n");
             out.write("95th percentile transaction latency: " + percentile95 + "\n");
             out.write("99th percentile transaction latency: " + percentile99 + "\n");
             out.close();
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
-        // output
-//        System.out.close();
-//        this.setOut("_stderr.txt", false);
-//        System.out.println("Total Number of transactions processed: "+ res);
-//        System.out.println("Total elapsed time for processing the transactions: " + execTimeSec);
-//        System.out.println("Transaction throughput: " + (double) res / (double) execTimeSec);
-//        System.out.println("Average transaction latency: " + mean);
-//        System.out.println("Median transaction latency: " + median);
-//        System.out.println("95th percentile transaction latency: " + percentile95);
-//        System.out.println("99th percentile transaction latency: " + percentile99);
-
-        return res;
+        return ((double) res / (double) execTimeSec);
     }
-
 
     @Override
     public Double call() throws Exception {

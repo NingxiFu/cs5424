@@ -17,13 +17,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class MyCommandLineRunner implements CommandLineRunner {
 
-    @Autowired
-    Driver driver;
+//    @Autowired
+//    Driver driver;
 
     @Override
     public void run(String... args) throws Exception {
         System.out.println("hello world");
 
-        driver.doTransactions();
+//        driver.multiThread();
+
     }
 }
