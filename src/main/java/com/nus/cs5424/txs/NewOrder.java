@@ -48,7 +48,7 @@ public class NewOrder implements transaction{
     @Autowired
     OrderLineStorage orderLineStorage;
 
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @Override
     public void process(String[] args) {
         // TODO 完成tx的编写和输出

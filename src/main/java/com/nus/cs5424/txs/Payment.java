@@ -28,7 +28,7 @@ public class Payment implements transaction{
     @Autowired
     OrderLineStorage orderLineStorage;
 
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @Override
     public void process(String[] args) {
 //2.2 Payment Transaction
