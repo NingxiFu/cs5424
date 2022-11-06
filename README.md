@@ -39,6 +39,11 @@ COPY "OrderLine" FROM '/home/stuproj/cs4224n/project_data/data_files/order-line.
 
 ### 3. run the application
 
+In the source code folder, run.
+```shell
+mvn clean pcakage
+```
+
 I have implment `CommandLineRunner ` class, so once the application is running, it will read the twenty x_act files and execute automatically. In this way, you can either run it on idea or use ` java -jar cs5424-0.0.4-SNAPSHOT.jar` command.
 
 <img width="1194" alt="image" src="https://user-images.githubusercontent.com/39428811/200172721-2746ef17-ae2e-4949-80d2-3c2a52e17d59.png">
