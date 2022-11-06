@@ -68,4 +68,23 @@ Median transaction latency: 485.0
 
 <img width="1194" alt="image" src="https://user-images.githubusercontent.com/39428811/200172606-4095ee88-5771-4f6b-bdcc-75cfbee6c027.png">
 
+### 6. customize configuration 
 
+You can change your setting parameter in application.properties 
+
+```java
+server.port=
+
+# Data-source config.
+spring.sql.init.platform=postgres
+spring.datasource.url=jdbc:postgresql:
+spring.datasource.username=
+spring.datasource.password=
+
+# HikariCP config (pool size, default isolation level).
+spring.datasource.type=com.zaxxer.hikari.HikariDataSource
+
+
+```
+
+If you countering any problems, pleas contact me. Thanks! 
