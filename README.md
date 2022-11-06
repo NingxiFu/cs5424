@@ -39,9 +39,33 @@ COPY "OrderLine" FROM '/home/stuproj/cs4224n/project_data/data_files/order-line.
 
 ### 3. run the application
 
+I have implment `CommandLineRunner ` class, so once the application is running, it will read the twenty x_act files and execute automatically. In this way, you can either run it on idea or use ` java -jar cs5424-0.0.4-SNAPSHOT.jar` command.
+
+<img width="1194" alt="image" src="https://user-images.githubusercontent.com/39428811/200172721-2746ef17-ae2e-4949-80d2-3c2a52e17d59.png">
+
+
 
 ### 4. get reuslt
 
+it will generate 20 files each corressponding to a client performance result.
 
+<img width="539" alt="image" src="https://user-images.githubusercontent.com/39428811/200172756-906824b8-0064-4e54-8c30-6c7c0bbb77ff.png">
+
+
+```shell
+Total Number of transactions processed: 8762
+Total elapsed time for processing the transactions: 9357.772
+Transaction throughput: 0.9363339906122953
+Average transaction latency: 1067.994978315453
+Median transaction latency: 485.0
+95th percentile transaction latency: 1714.0
+99th percentile transaction latency: 15559.68
+
+```
+
+
+### 5. get transaction output log
+
+<img width="1194" alt="image" src="https://user-images.githubusercontent.com/39428811/200172606-4095ee88-5771-4f6b-bdcc-75cfbee6c027.png">
 
 
