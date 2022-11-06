@@ -8,6 +8,7 @@ package com.nus.cs5424;
 
 import com.nus.cs5424.driver.Driver;
 import com.nus.cs5424.util.SpringBeanUtil;
+import com.nus.cs5424.util.ThreadPrintStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,7 @@ public class MyCommandLineRunner implements CommandLineRunner {
     public void run(String... args) throws Exception {
         System.out.println("-------------------BEGIN BENCHMARK-------------------------");
 
+        ThreadPrintStream.replaceSystemOut();
         ExecutorService executorService = Executors.newFixedThreadPool(CLIENT);
         List<Callable<Double>> callableList = new ArrayList<>(CLIENT);
 
@@ -58,6 +60,7 @@ public class MyCommandLineRunner implements CommandLineRunner {
                 e.printStackTrace();
             }
         }
+
         System.out.println("Average throughput of " + CLIENT + " clients is" + (thrPutSum / (double) CLIENT));
         System.out.println("Minimum throughput of " + CLIENT + " clients is" + min);
         System.out.println("Maximum throughput of " + CLIENT + " clients is" + max);

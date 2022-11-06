@@ -7,14 +7,18 @@
 package com.nus.cs5424.driver;
 
 import com.nus.cs5424.txs.*;
+import com.nus.cs5424.util.ThreadPrintStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +39,7 @@ public class Driver implements Callable<Double> {
 
     private static final String tx_file = "project_files/xact_files/%s.txt";
     private static final String benchMark = "benchMark{%s}.txt";
+    private static final String LOG = "LogFile{%s}.txt";
 
     public int index = 0;
 
@@ -66,20 +71,24 @@ public class Driver implements Callable<Double> {
     @Autowired
     RelatedCustomer relatedCustomer_t;
 
-//    private static final String tx_file = "project_files/xact_files/testDelivery%s.txt";//test%s
-//    private static final String benchMark = "benchMarkDelivery{%s}.txt";//benchMark{%s}
-//    private static final String test_file = "project_files/xact_files/testBenchMark.txt";
-
-    public double doTransactions(int index) {
+    public double doTransactions(int index) throws FileNotFoundException {
         String threadName = Thread.currentThread().getName();
         long BEGIN_THREAD = System.currentTimeMillis();
 
-        System.out.println("---------------" + threadName + "Thread Begin---------------");
         String readFile = String.format(tx_file, index);
         String writeFile = String.format(benchMark, index);
+        String logFile = String.format(LOG, index);
 
+        //-----------------------------
+        FileOutputStream fos = new FileOutputStream(logFile);
+        PrintStream stream = new PrintStream(new BufferedOutputStream(fos));
+        ((ThreadPrintStream)System.out).setThreadOut(stream);
+
+        System.out.println("---------------" + threadName + "Thread Begin---------------");
         System.out.println(String.format("ReadFile Name %s", readFile));
         System.out.println(String.format("WriteFile Name %s", writeFile));
+        System.out.println(String.format("LogFile Name %s", logFile));
+
 
         Scanner sc = null;
         try {
@@ -158,9 +167,10 @@ public class Driver implements Callable<Double> {
             System.out.println("事务类型： " + type + " 所花费的时间： " + (end - start));
             if (res % 10 == 0)
                 System.out.println("Thread:" + threadName + "res : " + res + " time :" + (end - BEGIN_THREAD));
-//            if (res == 100)
-//                break;
+            if (res == 10)
+                break;
         }
+        System.out.close();
 
         System.out.println("---------------" + threadName + "Transaction Done---------------");
 
@@ -170,6 +180,7 @@ public class Driver implements Callable<Double> {
         double percentile95 = Quantiles.percentiles().index(95).compute(transactionTimeList);
         double percentile99 = Quantiles.percentiles().index(99).compute(transactionTimeList);
         Double execTimeSec = (double) totalTime / 1000.0;
+
 
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter(writeFile));
@@ -191,5 +202,17 @@ public class Driver implements Callable<Double> {
     @Override
     public Double call() throws Exception {
         return doTransactions(this.index);
+    }
+
+    private void setOut(String filenNameEnd, boolean isOut) throws FileNotFoundException {
+        File file;
+        if(isOut){
+            file = new File(filenNameEnd);}
+        else{
+            file = new File(filenNameEnd);}
+
+        FileOutputStream fos = new FileOutputStream(file);
+        PrintStream ps = new PrintStream(fos);
+        ((ThreadPrintStream)System.out).setThreadOut(ps);
     }
 }

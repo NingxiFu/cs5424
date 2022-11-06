@@ -1,14 +1,5 @@
-/**
- * @(#)ThreadPrintStream.java, Nov 04, 2022.
- * <p>
- * Copyright 2022 fenbi.com. All rights reserved.
- * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
- */
 package com.nus.cs5424.util;
 
-/**
- * @author guochenghui
- */
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
