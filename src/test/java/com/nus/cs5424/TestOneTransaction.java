@@ -37,6 +37,6 @@ public class TestOneTransaction {
 
     @Test
     public void test1() throws InterruptedException, ExecutionException {
-        driver.doTransactions(1);//2192548.92
+        driver.doTransactions(0);//2192548.92
     }
 }

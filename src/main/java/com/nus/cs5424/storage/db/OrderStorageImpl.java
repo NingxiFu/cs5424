@@ -76,8 +76,7 @@ public class OrderStorageImpl extends BaseStorage implements OrderStorage {
     public Order updateCarrierIdByOldestOrderReturningO_ID_O_C_ID(int o_w_id, int o_d_id, int o_carrier_id) {
         String sql = "UPDATE " + TABLE + " SET \"O_CARRIER_ID\" = " + o_carrier_id +
                 " WHERE \"O_W_ID\" = " + o_w_id + " AND " +  "\"O_D_ID\" = " + o_d_id
-                + " AND \"O_CARRIER_ID\" IS NULL "
-                + " AND \"O_ID\" = (SELECT \"O_ID\" from \"Order\" where \"O_W_ID\" = " + o_w_id + " AND \"O_D_ID\" =  " + o_d_id + " ORDER BY \"O_ID\" ASC LIMIT 1) "
+                + " AND \"O_ID\" = (SELECT \"O_ID\" from \"Order\" where \"O_W_ID\" = " + o_w_id + " AND \"O_D_ID\" =  " + o_d_id + " AND \"O_CARRIER_ID\" IS NULL " + " ORDER BY \"O_ID\" ASC LIMIT 1) "
                 + " RETURNING *";
 //        Map<String, Object> result =  (Map<String, Object>) jdbcTemplate.queryForMap(sql, new Object[] {id});
         try {
